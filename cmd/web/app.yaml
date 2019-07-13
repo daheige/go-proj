@@ -1,0 +1,14 @@
+#配置文件
+AppEnv: "local"
+AppName: go-api
+
+#redis配置
+RedisCommon:
+  Host: 127.0.0.1
+  Port: 6379
+  Password:
+  Database: 0
+  #表示即使没有redis连接时依然可以保持N个空闲的连接，而不被清除，随时处于待命状态
+  MaxIdle: 10 #表示连接池空闲连接列表的长度限制
+  MaxActive: 100 #表示连接池中最大连接数限制
+  IdleTimeout: 30 #最大的空闲连接等待时间，超过此时间后，空闲连接将被关闭

@@ -12,3 +12,4 @@ cmd/web/web
 cmd/web/web.exe
 checkVersion.go
 *_test.go
+*.log
