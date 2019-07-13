@@ -1,0 +1,14 @@
+logs
+go-proj/bin/rpc
+go-proj/bin/rpc.exe
+go-proj/bin/web
+go-proj/bin/web.exe
+go-proj/bin/job
+go-proj/bin/job.exe
+test
+cmd/rpc/rpc.exe
+cmd/rpc/rpc
+cmd/web/web
+cmd/web/web.exe
+checkVersion.go
+*_test.go
