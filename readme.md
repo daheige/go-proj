@@ -16,7 +16,7 @@
     │       └── home    web首页，可以没有，根据项目来
     ├── bin             生成的golang二进制目录和shell脚步目录
     ├── logs            日志目录
-    ├── cmd             各个应用对应main.go启动文件和对应
+    ├── cmd             各个应用对应main.go启动文件
     │   ├── job
     │   ├── rpc
     │   └── web
