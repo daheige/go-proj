@@ -5,7 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"go-proj/HealthCheck/pprofCheck"
-	"go-proj/app/rpc/utils"
+	"go-proj/app/rpc/middleware"
 	"log"
 	"net"
 	"net/http"
@@ -92,7 +92,7 @@ func main() {
 	opts = append(opts, grpc.ConnectionTimeout(10*time.Second))
 
 	// 注册interceptor
-	opts = append(opts, grpc.UnaryInterceptor(utils.RequestInterceptor))
+	opts = append(opts, grpc.UnaryInterceptor(middleware.RequestInterceptor))
 
 	server := grpc.NewServer(opts...)
 	pb.RegisterGreeterServiceServer(server, &service.GreeterService{})

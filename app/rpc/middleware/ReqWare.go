@@ -1,4 +1,4 @@
-package utils
+package middleware
 
 import (
 	"context"
@@ -6,6 +6,9 @@ import (
 	"net"
 	"strings"
 	"time"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	"github.com/daheige/thinkgo/common"
 
@@ -16,7 +19,23 @@ import (
 )
 
 // request interceptor 请求拦截器，记录请求的基本信息
-func RequestInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
+func RequestInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (res interface{}, err error) {
+	defer func() {
+		// grpc recover异常捕获
+		if r := recover(); r != nil {
+			//这里必须采用grpc定义的错误格式返回code,desc
+			err = status.Errorf(codes.Internal, "%s", "server inner error")
+
+			//log.Println("exec error:", err)
+			Logger.Emergency(ctx, "exec error", map[string]interface{}{
+				"reply":       res,
+				"panic_error": r,
+				"grpc_error":  err,
+				"trace_error": string(common.Stack()),
+			})
+		}
+	}()
+
 	t := time.Now()
 	clientIp, _ := GetClientIp(ctx)
 	//log.Println("client_ip: ", clientIp)
@@ -37,7 +56,7 @@ func RequestInterceptor(ctx context.Context, req interface{}, info *grpc.UnarySe
 	Logger.Info(ctx, "exec begin", nil)
 
 	// 继续处理请求
-	res, err := handler(ctx, req)
+	res, err = handler(ctx, req)
 	ttd := time.Now().Sub(t).Seconds()
 	if err != nil {
 		Logger.Error(ctx, "exec error", map[string]interface{}{
@@ -56,7 +75,7 @@ func RequestInterceptor(ctx context.Context, req interface{}, info *grpc.UnarySe
 	return res, err
 }
 
-//从上下文中获取客户端ip地址
+// GetClientIp 从上下文中获取客户端ip地址
 func GetClientIp(ctx context.Context) (string, error) {
 	pr, ok := peer.FromContext(ctx)
 	if !ok {
