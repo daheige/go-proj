@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"go-proj/HealthCheck/pprofCheck"
 	config "go-proj/app/conf"
 	"log"
 	"net/http"
@@ -67,7 +68,7 @@ func init() {
 		httpMux.HandleFunc("/debug/pprof/profile", pprof.Profile)
 		httpMux.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
 		httpMux.HandleFunc("/debug/pprof/trace", pprof.Trace)
-		httpMux.HandleFunc("/check", routes.HealthCheckHandler)
+		httpMux.HandleFunc("/check", pprofCheck.HealthHandler)
 
 		//metrics监控
 		httpMux.Handle("/metrics", promhttp.Handler())

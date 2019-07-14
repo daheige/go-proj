@@ -1,9 +1,10 @@
 package routes
 
 import (
-	"go-proj/app/helper/ginMonitor"
+	"go-proj/HealthCheck/ginCheck"
 	"go-proj/app/web/controller"
 	"go-proj/app/web/middleware"
+	"go-proj/library/ginMonitor"
 
 	"github.com/gin-gonic/gin"
 )
@@ -25,7 +26,7 @@ func WebRoute(router *gin.Engine) {
 		})
 	})
 
-	router.GET("/check", HealthCheck)
+	router.GET("/check", ginCheck.HealthCheck)
 
 	homeCtrl := &controller.HomeController{}
 

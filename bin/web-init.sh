@@ -17,14 +17,26 @@ mkdir -p $root_dir/logs/$appName
 chmod 777 -R $root_dir/logs/$appName
 echo "初始化成功！"
 
-if [ -f $root_dir/bin/${appName}-check-version.sh ];then
+#自动版本号生成
+if [ -f $root_dir/bin/pprof-check-version.sh ];then
     echo "生成自动版本号"
-    sh $root_dir/bin/${appName}-check-version.sh
+    sh $root_dir/bin/pprof-check-version.sh
 fi
+
+if [ "$appName" = "web" ];then
+    sh $root_dir/bin/web-check-version.sh
+fi
+
+#rpc pb协议自动生成golang pb代码和php代码
+if [ "$appName" = "rpc" ];then
+    sh $root_dir/bin/pb-generate.sh
+fi
+
+mkdir -p $root_dir/bin/go-gen
 
 echo "开始构建web二进制文件"
 cd $root_dir/cmd/$appName
-go build -o $root_dir/bin/$appName
+go build -o $root_dir/bin/go-gen/$appName
 
 #清除cmd/下面由于go build生成的二进制文件
 cd $root_dir/cmd/$appName

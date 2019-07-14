@@ -5,3 +5,10 @@ rpc
 job
 job.exe
 logs
+web
+rpc
+job
+web.exe
+rpc.exe
+job.exe
+go-gen

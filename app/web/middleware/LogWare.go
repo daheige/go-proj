@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"go-proj/app/extensions/Logger"
 	"go-proj/app/helper"
+	"go-proj/library/Logger"
 	"time"
 
 	"github.com/daheige/thinkgo/common"
