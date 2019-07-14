@@ -29,13 +29,9 @@ func main() {
 	s := grpc.NewServer()
 	pb.RegisterGreeterServiceServer(s, &service.GreeterService{})
 
-	// Register reflection service on gRPC server.
-	// https://github.com/grpc/grpc-go/blob/master/Documentation/server-reflection-tutorial.md
-	// reflection.Register(s)
-
 	//其他grpc拦截器用法，看go grpc源代码，里面都有对应的方法
 	// Go-gRPC 实践指南 https://www.bookstack.cn/read/go-grpc/chapter2-interceptor.md
-	log.Println("hg-grpc run on:", port)
+	log.Println("go-proj grpc run on:", port)
 	if err = s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
