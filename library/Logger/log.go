@@ -2,7 +2,7 @@ package Logger
 
 import (
 	"context"
-	"go-proj/app/helper"
+	"go-proj/library/helper"
 	"runtime"
 	"strings"
 

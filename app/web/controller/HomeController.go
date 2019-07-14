@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	config "go-proj/app/conf"
+	config "go-proj/conf"
 
 	"github.com/gin-gonic/gin"
 )

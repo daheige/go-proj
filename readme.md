@@ -5,13 +5,6 @@
 # 目录结构
     .
     ├── app                             应用目录
-    │   ├── conf                        配置文件golang定义
-    │   │   ├── base.go
-    │   │   └── bootstrap.go
-    │   ├── helper                      助手函数
-    │   │   ├── common.go
-    │   │   ├── context.go
-    │   │   └── readme.md
     │   ├── job                         job/task作业层
     │   ├── logic                       公共逻辑层，上下文采用标准上下文ctx
     │   │   ├── BaseLogic.go
@@ -22,7 +15,7 @@
     │   └── web                         web/api
     │       ├── controller
     │       ├── middleware
-    │       └── routes
+    │       └── routes                        
     ├── bin                             存放golang生成的二进制文件和shell脚本                      
     │   ├── go-gen                      golang生成的二进制文件
     │   │   ├── rpc
@@ -33,6 +26,7 @@
     │   ├── pprof-check-version.sh      pprof性能监控生成自动版本号
     │   ├── web-check-version.sh        gin框架应用性能监控自动生成版本号
     │   └── web-init.sh                 golang rpc,web,job自动化构建脚本
+    ├── conf                            项目配置文件目录
     ├── clients                         golang,php,nodejs客户端生成的代码
     │   ├── go
     │   │   └── client.go
@@ -62,6 +56,7 @@
     │   │   └── checkversion.go
     │   └── readme.md
     ├── library                         公共库主要是第三方库，logger,gin metrics监控等
+    │   ├── helper                      助手函数库
     │   ├── ginMonitor                  gin web/api打点监控
     │   │   └── monitor.go
     │   └── Logger                      日志服务

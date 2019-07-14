@@ -5,7 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"go-proj/HealthCheck/pprofCheck"
-	config "go-proj/app/conf"
+	config "go-proj/conf"
 	"log"
 	"net/http"
 	"net/http/pprof"

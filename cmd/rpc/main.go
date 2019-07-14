@@ -21,7 +21,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
-	config "go-proj/app/conf"
+	config "go-proj/conf"
 	"go-proj/pb"
 
 	"go-proj/app/rpc/service"

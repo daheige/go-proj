@@ -1,7 +1,7 @@
 package logic
 
 import (
-	"go-proj/app/helper"
+	"go-proj/library/helper"
 	"log"
 )
 
