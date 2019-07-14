@@ -37,8 +37,8 @@
     │   ├── go
     │   │   └── client.go
     │   └── php
-    │       ├── App
-    │       ├── composer.json
+    │       ├── App                     自动生成的php代码
+    │       ├── composer.json           composer文件，可以指定App命名空间自动加载
     │       ├── composer.lock
     │       ├── hello_client.php
     │       ├── readme.md
@@ -46,7 +46,7 @@
     ├── cmd                             各个应用的main.go文件和配置文件app.yaml,线上可以放在别的目录
     │   ├── job
     │   ├── rpc
-    │   │   ├── app.yaml
+    │   │   ├── app.yaml                开发模式下的配置文件
     │   │   ├── logs
     │   │   └── main.go
     │   └── web
@@ -68,12 +68,12 @@
     │       ├── log.go
     │       └── readme.md
     ├── LICENSE
-    ├── logs                            运行日志目录，线上可放在别的目录
+    ├── logs                            运行日志目录，线上可放在别的目录,开发模式goland日志放在logs中
     │   ├── rpc
     │   └── web
     ├── pb                              根据pb协议，自动生成的golang pb代码
     │   └── hello.pb.go
-    ├── protos                          pb协议目录
+    ├── protos                          pb协议文件
     │   └── hello.proto
     └── readme.md
 
@@ -84,7 +84,7 @@
     1、生成pb代码
         sh bin/pb-generate.sh
     2、启动服务端
-    $ go run main.go 
+    $ sh bin/app-start.sh rpc
     2019/07/14 11:25:26 server pprof run on:  51051
     2019/07/14 11:25:26 go-proj grpc run on: 50051
 
@@ -133,6 +133,9 @@
 
     开始构建web二进制文件
     构建rpc成功！
+
+# 开发模式启动
+    可以把项目中的app.exam.yaml复制到cmd对应的应用中，然后go run main.go启动
 
 # 关于项目部署
     建议将web,grpc,job分开单独部署，可采用不同的app.yaml配置文件启动

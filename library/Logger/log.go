@@ -34,13 +34,15 @@ import (
 func writeLog(ctx context.Context, levelName string, message string, options map[string]interface{}) {
 	reqUri := getStringByCtx(ctx, "request_uri")
 	tag := strings.Replace(reqUri, "/", "_", -1)
+	tag = strings.Replace(tag, ".", "_", -1)
 	tag = strings.TrimLeft(tag, "_")
-	ua := getStringByCtx(ctx, "user_agent")
 
 	logId := getStringByCtx(ctx, "log_id")
 	if logId == "" {
 		logId = common.RndUuid()
 	}
+
+	ua := getStringByCtx(ctx, "user_agent")
 
 	//函数调用
 	_, file, line, _ := runtime.Caller(2)

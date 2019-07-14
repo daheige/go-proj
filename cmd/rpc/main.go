@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"go-proj/HealthCheck/pprofCheck"
+	"go-proj/app/rpc/utils"
 	"log"
 	"net"
 	"net/http"
@@ -85,7 +86,15 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	server := grpc.NewServer()
+	var opts []grpc.ServerOption
+
+	//设置超时10s
+	opts = append(opts, grpc.ConnectionTimeout(10*time.Second))
+
+	// 注册interceptor
+	opts = append(opts, grpc.UnaryInterceptor(utils.RequestInterceptor))
+
+	server := grpc.NewServer(opts...)
 	pb.RegisterGreeterServiceServer(server, &service.GreeterService{})
 
 	//其他grpc拦截器用法，看go grpc源代码，里面都有对应的方法
