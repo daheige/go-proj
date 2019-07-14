@@ -1,6 +1,6 @@
 # go-proj项目
     基于golang gin框架和grpc框架封装而成。
-    涉及到的包：gin,gorm,redisgo,grpc,protobuf
+    涉及到的包：gin,grpc,protobuf,daheige/thinkgo
 
 # 目录结构
     .
