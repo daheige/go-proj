@@ -13,3 +13,6 @@ cmd/web/web.exe
 checkVersion.go
 *_test.go
 *.log
+app.yaml
+HealthCheck/ginCheck
+HealthCheck/pprofCheck
