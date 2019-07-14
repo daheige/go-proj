@@ -41,6 +41,18 @@
     ├── logs                            各个应用的日志文件
     │   └── web
     └── readme.md
+
+# grpc运行
+    1、生成pb代码
+        sh bin/pb-generate.sh
+    2、启动服务端
+    $ go run cmd/rpc/main.go 
+    2019/07/14 08:48:29 hg-grpc run on: 50051
+
+    3、运行客户端
+    $ go run clients/go/client.go 
+    2019/07/14 08:48:59 name:hello,golang grpc,message:call ok
+
 # 关于项目部署
     建议将web,grpc,job分开单独部署，可采用不同的app.yaml配置文件启动
 
