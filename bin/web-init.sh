@@ -34,9 +34,9 @@ fi
 
 if [ -d $root_dir/bin/go-gen/$appName ];then
     rm -rf $root_dir/bin/go-gen/$appName
-else
-    mkdir -p $root_dir/bin/go-gen/$appName
 fi
+
+mkdir -p $root_dir/bin/go-gen/$appName
 
 echo "开始构建web二进制文件"
 cd $root_dir/cmd/$appName
