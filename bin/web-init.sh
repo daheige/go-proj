@@ -38,7 +38,7 @@ fi
 
 mkdir -p $root_dir/bin/go-gen/$appName
 
-echo "开始构建web二进制文件"
+echo "开始构建$appName二进制文件"
 cd $root_dir/cmd/$appName
 go build -o $root_dir/bin/go-gen/$appName/$appName
 
