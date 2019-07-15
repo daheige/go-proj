@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"go-proj/HealthCheck/ginCheck"
+	"go-proj/healthCheck/ginCheck"
 	"go-proj/app/web/controller"
 	"go-proj/app/web/middleware"
 	"go-proj/library/ginMonitor"

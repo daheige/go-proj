@@ -14,5 +14,5 @@ checkVersion.go
 *_test.go
 *.log
 app.yaml
-HealthCheck/ginCheck
-HealthCheck/pprofCheck
+healthCheck/ginCheck
+healthCheck/pprofCheck

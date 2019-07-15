@@ -1,6 +1,8 @@
 package helper
 
-import "regexp"
+import (
+	"regexp"
+)
 
 //根据ua获取设备名称
 func GetDeviceByUa(ua string) string {

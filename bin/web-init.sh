@@ -32,11 +32,15 @@ if [ "$appName" = "rpc" ];then
     sh $root_dir/bin/pb-generate.sh
 fi
 
-mkdir -p $root_dir/bin/go-gen
+if [ -d $root_dir/bin/go-gen/$appName ];then
+    rm -rf $root_dir/bin/go-gen/$appName
+else
+    mkdir -p $root_dir/bin/go-gen/$appName
+fi
 
 echo "开始构建web二进制文件"
 cd $root_dir/cmd/$appName
-go build -o $root_dir/bin/go-gen/$appName
+go build -o $root_dir/bin/go-gen/$appName/$appName
 
 #清除cmd/下面由于go build生成的二进制文件
 cd $root_dir/cmd/$appName
