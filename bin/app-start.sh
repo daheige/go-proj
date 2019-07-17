@@ -16,4 +16,4 @@ fi
 sh $root_dir/bin/web-init.sh $appName
 
 #开始运行
-$root_dir/bin/go-gen/$appName -config_dir=$root_dir -log_dir=$root_dir/logs/$appName
+$root_dir/bin/go-gen/$appName/$appName -config_dir=$root_dir -log_dir=$root_dir/logs/$appName
