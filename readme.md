@@ -97,7 +97,9 @@
     call ok
 
 # woker job/task运行
-    $ sh bin/pprof-check-version.sh 
+    开发环境下运行job/task
+    $ sh bin/pprof-check-version.sh
+    $ cp app.exam.yaml cmd/worker/app.yaml
     $ go run cmd/worker/worker.go 
     2019/07/17 21:29:37 ===worker service start===
     2019/07/17 21:29:37 server pprof run on:  30031
