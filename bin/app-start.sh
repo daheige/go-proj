@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#开发环境下，构建项目并启动应用
 root_dir=$(cd "$(dirname "$0")"; cd ..; pwd)
 
 appName=$1

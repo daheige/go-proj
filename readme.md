@@ -84,7 +84,6 @@
     2019/07/14 11:25:26 server pprof run on:  51051
     2019/07/14 11:25:26 go-proj grpc run on: 50051
 
-
     3、运行客户端
     $ go run clients/go/client.go 
     2019/07/14 11:26:36 name:hello,golang grpc,message:call ok
@@ -96,6 +95,16 @@
     status code: 0
     name:hello,world
     call ok
+
+# woker job/task运行
+    $ sh bin/pprof-check-version.sh 
+    $ go run cmd/worker/worker.go 
+    2019/07/17 21:29:37 ===worker service start===
+    2019/07/17 21:29:37 server pprof run on:  30031
+    2019/07/17 21:29:38 hello world
+    2019/07/17 21:29:39 current id:  heige
+    2019/07/17 21:29:40 hello world
+    2019/07/17 21:29:42 current id:  heige
 
 # 项目工程化构建
     构建web
