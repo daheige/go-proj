@@ -79,6 +79,7 @@
     1、生成pb代码
         sh bin/pb-generate.sh
     2、启动服务端
+    $ cp app.exam.yaml app.yaml
     $ sh bin/app-start.sh rpc
     2019/07/14 11:25:26 server pprof run on:  51051
     2019/07/14 11:25:26 go-proj grpc run on: 50051
