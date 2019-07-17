@@ -14,7 +14,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/robfig/cron"
+	cron "github.com/robfig/cron/v3"
 
 	"github.com/daheige/thinkgo/monitor"
 
@@ -86,7 +86,7 @@ func main() {
 	j.SetCtx(jCtx)
 
 	testTask := &task.TestTask{}
-	c := cron.New()
+	c := cron.New(cron.WithSeconds())          //具体用法可以看github.com/robfig/cron
 	c.AddFunc("*/3 * * * * *", j.Info)         //每隔3s执行
 	c.AddFunc("*/2 * * * * *", testTask.Hello) //每隔2s执行
 	c.Start()
