@@ -1,8 +1,10 @@
-# go-proj项目
+# go-proj 项目
+
     基于golang gin框架和grpc框架封装而成。
     涉及到的包：gin,grpc,protobuf,daheige/thinkgo
 
 # 目录结构
+
     .
     ├── app                             应用目录
     │   ├── job                         job/task作业层
@@ -15,8 +17,8 @@
     │   └── web                         web/api
     │       ├── controller
     │       ├── middleware
-    │       └── routes                        
-    ├── bin                             存放golang生成的二进制文件和shell脚本                      
+    │       └── routes
+    ├── bin                             存放golang生成的二进制文件和shell脚本
     │   ├── go-gen                      golang生成的二进制文件
     │   │   ├── rpc
     │   │   └── web
@@ -72,10 +74,12 @@
     │   └── hello.proto
     └── readme.md
 
-# go-grpc和php grpc工具安装
+# go-grpc 和 php grpc 工具安装
+
     参考https://github.com/daheige/hg-grpc
 
-# grpc运行
+# grpc 运行
+
     1、生成pb代码
         sh bin/pb-generate.sh
     2、启动服务端
@@ -85,22 +89,23 @@
     2019/07/14 11:25:26 go-proj grpc run on: 50051
 
     3、运行客户端
-    $ go run clients/go/client.go 
+    $ go run clients/go/client.go
     2019/07/14 11:26:36 name:hello,golang grpc,message:call ok
 
     php客户端
-    $ php clients/php/hello_client.php 
+    $ php clients/php/hello_client.php
     检测App\Grpc\GPBMetadata\Hello\HelloReq是否存在
     bool(true)
     status code: 0
     name:hello,world
     call ok
 
-# woker job/task运行
+# woker job/task 运行
+
     开发环境下运行job/task
     $ sh bin/pprof-check-version.sh
     $ cp app.exam.yaml cmd/worker/app.yaml
-    $ go run cmd/worker/worker.go 
+    $ go run cmd/worker/worker.go
     2019/07/17 21:29:37 ===worker service start===
     2019/07/17 21:29:37 server pprof run on:  30031
     2019/07/17 21:29:38 hello world
@@ -109,6 +114,7 @@
     2019/07/17 21:29:42 current id:  heige
 
 # 项目工程化构建
+
     构建web
     $ sh bin/web-init.sh web
     初始化成功！
@@ -142,14 +148,33 @@
     构建rpc成功！
 
 # 开发模式启动
+
     可以把项目中的app.exam.yaml复制到cmd对应的应用中，然后go run main.go启动
 
 # 关于项目部署
+
     建议将web,grpc,job分开单独部署，可采用不同的app.yaml配置文件启动
 
 # 项目上线说明
+
     1、可将bin下面的对应cmd下面的main.go生成的二进制文件，分发到线上部署，配置文件参考cmd/web/app.yaml
     2、上线二进制文件，需要指定app.yaml目录和logs目录
 
-# 版权
-    MIT
+# grpc 中间件
+
+    chain.go
+    定义多个中间件（拦截器）
+    // 注册interceptor和中间件
+    opts = append(opts, grpc.UnaryInterceptor(
+    	middleware.ChainUnaryServer(
+    		middleware.RequestInterceptor,
+    		middleware.Limit(&middleware.MockPassLimiter{}),
+    	)))
+
+    server := grpc.NewServer(opts...)
+    具体demo参考cmd/rpc/main.go
+
+    grpc中间件参考： https://github.com/grpc-ecosystem/go-grpc-middleware
+
+#版权
+MIT
