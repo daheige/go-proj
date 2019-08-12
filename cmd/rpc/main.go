@@ -91,8 +91,12 @@ func main() {
 	//设置超时10s
 	opts = append(opts, grpc.ConnectionTimeout(10*time.Second))
 
-	// 注册interceptor
-	opts = append(opts, grpc.UnaryInterceptor(middleware.RequestInterceptor))
+	// 注册interceptor和中间件
+	opts = append(opts, grpc.UnaryInterceptor(
+		middleware.ChainUnaryServer(
+			middleware.RequestInterceptor,
+			middleware.Limit(&middleware.MockPassLimiter{}),
+		)))
 
 	server := grpc.NewServer(opts...)
 	pb.RegisterGreeterServiceServer(server, &service.GreeterService{})
