@@ -16,6 +16,7 @@ github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDk
 github.com/cockroachdb/apd v1.1.0/go.mod h1:8Sl8LxpKi29FqWXR16WEFZRNSz3SoPzUzeMeY4+DwBQ=
 github.com/daheige/thinkgo v1.3.2 h1:I8dqFSANwU1Utdifl1ffj0yPHJXdwfQ3fW794gFGJGA=
 github.com/daheige/thinkgo v1.3.2/go.mod h1:su80uWnI8qTCQOAvl6oBkLIuhcmdqZnzprXVUdqKOPI=
+github.com/daheige/thinkgo v1.3.3/go.mod h1:su80uWnI8qTCQOAvl6oBkLIuhcmdqZnzprXVUdqKOPI=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/denisenkom/go-mssqldb v0.0.0-20190515213511-eb9f6a1743f3/go.mod h1:zAg7JM8CkOJ43xKXIj7eRO9kmWm/TW578qo+oDO6tuM=
