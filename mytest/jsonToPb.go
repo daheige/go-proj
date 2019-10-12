@@ -55,6 +55,9 @@ func main() {
 			w.Write([]byte(err.Error()))
 			return
 		}
+		var b2 = []byte{10, 7, 100, 97, 104, 101, 105, 103, 101}
+
+		log.Println("b2 string: ", string(b2))
 
 		w.Write(b)
 	})
