@@ -78,6 +78,33 @@
 
     参考https://github.com/daheige/hg-grpc
 
+# 设置golang环境变量和go mod代理
+    
+    vim ~/.bashrc
+    export GOROOT=/usr/local/go
+    export GOOS=linux
+    export GOPATH=/mygo
+    export GOSRC=$GOPATH/src
+    export GOBIN=$GOPATH/bin
+    export GOPKG=$GOPATH/pkg
+    
+    #开启go mod机制
+    export GO111MODULE=auto
+    
+    #禁用cgo模块
+    export CGO_ENABLED=0
+    
+    # 阿里云代理
+    export GOPROXY=https://mirrors.aliyun.com/goproxy/,direct
+
+    # 也可以使用下面这个代理
+    #export GOPROXY=https://goproxy.cn,direct
+
+    #下面一行请根据实际情况修改
+    export PATH=$GOROOT/bin:$GOBIN:$PATH
+    
+    保存退出:wq 使配置文件生效 source ~/.bashrc
+    
 # grpc 运行
 
     1、生成pb代码
@@ -176,5 +203,6 @@
 
     grpc中间件参考： https://github.com/grpc-ecosystem/go-grpc-middleware
 
-#版权
-MIT
+# 版权
+
+    MIT
