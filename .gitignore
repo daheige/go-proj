@@ -16,4 +16,4 @@ checkVersion.go
 app.yaml
 healthCheck/ginCheck
 healthCheck/pprofCheck
-
+vendor/*
