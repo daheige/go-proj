@@ -78,8 +78,8 @@
 
     参考https://github.com/daheige/hg-grpc
 
-# 设置golang环境变量和go mod代理
-    
+# 设置 golang 环境变量和 go mod 代理
+
     vim ~/.bashrc
     export GOROOT=/usr/local/go
     export GOOS=linux
@@ -87,13 +87,13 @@
     export GOSRC=$GOPATH/src
     export GOBIN=$GOPATH/bin
     export GOPKG=$GOPATH/pkg
-    
+
     #开启go mod机制
     export GO111MODULE=auto
-    
+
     #禁用cgo模块
     export CGO_ENABLED=0
-    
+
     # 阿里云代理
     export GOPROXY=https://mirrors.aliyun.com/goproxy/,direct
 
@@ -102,9 +102,9 @@
 
     #下面一行请根据实际情况修改
     export PATH=$GOROOT/bin:$GOBIN:$PATH
-    
+
     保存退出:wq 使配置文件生效 source ~/.bashrc
-    
+
 # grpc 运行
 
     1、生成pb代码
@@ -202,6 +202,18 @@
     具体demo参考cmd/rpc/main.go
 
     grpc中间件参考： https://github.com/grpc-ecosystem/go-grpc-middleware
+
+# go mod 编译方式
+
+    方式1:
+                如果采用go mod tidy 拉取依赖，会在$GOPATH/pkg/mod缓存go.mod中的包
+                cd cmd/web 然后执行 go build进行编译就可以，更新go.mod包，会自动进行包依赖拉取
+
+    方式2:
+                如果采用vendor机制，执行  go mod vendor  后会按需把项目用到的包，放在go-proj根目录的vendor下面
+                cd cmd/web  然后执行  go build -mod=vendor 拉取当前目录下的vendor作为编译依赖包，进行编译
+
+    以上两种方式推荐使用方式1，这样只需要升级go.mod中的包，就不需要担心包依赖问题
 
 # 版权
 
