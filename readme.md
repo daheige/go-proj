@@ -203,6 +203,67 @@
 
     grpc中间件参考： https://github.com/grpc-ecosystem/go-grpc-middleware
 
+# nginx grpc_pass
+
+    启动两个实例
+    $ cd cmd/rpc
+    $ go run main.go --port=50051
+    2019/11/09 18:55:00 server pprof run on:  51051
+    2019/11/09 18:55:00 go-proj grpc run on: 50051
+
+    新开一个终端
+    $ cd cmd/rpc
+    $ go run main.go --port=50052 --log_dir=/web/wwwlogs
+    2019/11/09 18:56:32 server pprof run on:  51052
+    2019/11/09 18:56:32 go-proj grpc run on: 50052
+
+    配置nginx grpc负载均衡
+    参考:
+    https://github.com/daheige/hg-grpc/blob/master/readme.md#%E9%85%8D%E7%BD%AEnginx-grpc%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1
+    为了go grpc服务高可用，需要对grpc服务做负载均衡处理，这里借助nginx grpc模块实现，配置如下:
+
+    #nginx gprc负载均衡配置，要求nginx1.13.0+以上版本
+    #nginx gprc负载均衡配置
+    # 多个ip:port实例
+    upstream go_grpc {
+        server 127.0.0.1:50051 weight=5 max_fails=3 fail_timeout=10;
+        server 127.0.0.1:50052 weight=1 max_fails=3 fail_timeout=10;
+    }
+
+    server {
+        listen 50050 http2;
+        server_name localhost;
+
+        access_log /web/wwwlogs/go-grpc-access.log;
+
+        location / {
+            grpc_pass grpc://go_grpc;
+        }
+    }
+
+    重启nginx
+    sudo service nginx restart
+
+    运行grpc client
+    $ go run clients/go/client_rpc.go
+    2019/11/09 19:01:18 name:hello,golang grpc,message:call ok
+    $ go run clients/go/client_rpc.go
+    2019/11/09 19:01:20 name:hello,golang grpc,message:call ok
+    $ go run clients/go/client_rpc.go
+    2019/11/09 19:01:23 name:hello,golang grpc,message:call ok
+
+    请求过程中可以看到两个实例，会产生响应日志
+    2019/11/09 19:07:46 req method:  /App.Grpc.Hello.GreeterService/SayHello
+    2019/11/09 19:07:46 req data:  name:"golang grpc"
+
+    查看请求日志
+    $ tail -f cmd/rpc/logs/go-grpc.log
+
+    $ tail -f /web/wwwlogs/go-grpc.log
+
+    通过查看日志，可以看到请求到50051这个实例的grpc请求相对多一点，50052这个实例相对少一点
+    因为nginx grpc的权重不一样
+
 # go mod 编译方式
 
     方式1:
