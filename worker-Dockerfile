@@ -1,0 +1,41 @@
+# web层docker构建镜像
+FROM golang:1.13.4 AS go-builder-worker
+
+# 设置golang环境变量和禁用CGO,开启go mod机制
+ENV  GO111MODULE=on CGO_ENABLED=0 \
+    GOPROXY=https://goproxy.cn,https://mirrors.aliyun.com/goproxy/,direct
+
+WORKDIR /mygo/go-proj
+
+COPY . /mygo/go-proj
+
+RUN cd /mygo/go-proj && go mod tidy \
+    && cd cmd/worker \
+    && go build -o /mygo/go-proj-worker
+
+FROM alpine:3.10
+
+#解决docker时区问题和中文乱码问题
+ENV TZ=Asia/Shanghai LANG="zh_CN.UTF-8"
+
+# 解决http x509证书问题，需要安装证书
+RUN echo $GOPROXY && echo "export LC_ALL=$LANG"  >>  /etc/profile \
+    && echo "https://mirror.tuna.tsinghua.edu.cn/alpine/v3.10/main/" > /etc/apk/repositories \
+    && apk update \
+    && apk upgrade \
+    && apk --no-cache add tzdata ca-certificates bash vim bash-doc bash-completion curl \
+    && ln -snf  /usr/share/zoneinfo/$TZ /etc/localtime \
+    && echo $TZ > /etc/timezone \
+    && rm -rf /var/cache/apk/* /tmp/* /var/tmp/* $HOME/.cache \
+    && mkdir -p /go-proj && mkdir -p /data/logs \
+    && mkdir -p /data/conf
+
+WORKDIR /data/www/go-proj
+
+COPY --from=go-builder-worker /mygo/go-proj-worker /data/www/go-proj
+
+EXPOSE 30031
+
+VOLUME ["/data/logs","/data/conf"]
+
+CMD ["/data/www/go-proj/go-proj-worker","-log_dir=/data/logs","-config_dir=/data/conf","-graceful-timeout=3s"]

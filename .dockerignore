@@ -1,0 +1,11 @@
+docker/*
+bin/*
+clients/*
+logs/*
+mytest/*
+*.yaml
+vendor/*
+.gitignore
+job-Dockerfile
+web-Dockerfile
+rpc-Dockerfile
