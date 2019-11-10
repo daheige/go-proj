@@ -27,7 +27,7 @@ RUN echo $GOPROXY && echo "export LC_ALL=$LANG"  >>  /etc/profile \
     && ln -snf  /usr/share/zoneinfo/$TZ /etc/localtime \
     && echo $TZ > /etc/timezone \
     && rm -rf /var/cache/apk/* /tmp/* /var/tmp/* $HOME/.cache \
-    && mkdir -p /go-proj && mkdir -p /data/logs \
+    && mkdir -p /data/www/go-proj && mkdir -p /data/logs \
     && mkdir -p /data/conf
 
 WORKDIR /data/www/go-proj

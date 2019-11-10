@@ -71,6 +71,7 @@ func (ctrl *HomeController) SetData(ctx *gin.Context) {
 
 	_, err = redisObj.Do("set", "myname", "daheige")
 	if err != nil {
+		log.Println("redis error:", err)
 		ctx.JSON(200, gin.H{
 			"code":    500,
 			"message": "set data error",

@@ -280,7 +280,8 @@
 
     web层:
         $ docker build -t go-proj-web:v1 -f web-Dockerfile .
-        运行： $ docker run -it --name=go-proj-web -v /data/logs:/data/logs -v /data/www/go-proj:/data/conf -p 1338:1338 -p 2338:2338 go-proj-web:v1
+        运行：
+        $ docker run -it --name=go-proj-web -v /data/logs:/data/logs -v /data/www/go-proj:/data/conf -p 1338:1338 -p 2338:2338 go-proj-web:v1
 
     job层:
         $ docker build -it go-proj-job:v1 -f job-Dockerfile .

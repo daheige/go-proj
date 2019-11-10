@@ -4,7 +4,7 @@ AppName: go-api
 
 #redis配置
 RedisCommon:
-  Host: 127.0.0.1
+  Host: 127.0.0.1 # 实际项目中，请记得修改
   Port: 6379
   Password:
   Database: 0
