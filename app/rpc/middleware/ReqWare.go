@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net"
+	"runtime/debug"
 	"strings"
 	"time"
 
@@ -31,7 +32,7 @@ func RequestInterceptor(ctx context.Context, req interface{}, info *grpc.UnarySe
 				"reply":       res,
 				"panic_error": r,
 				"grpc_error":  err,
-				"trace_error": string(common.Stack()),
+				"trace_error": string(debug.Stack()),
 			})
 		}
 	}()

@@ -6,6 +6,7 @@ import (
 	"go-proj/healthCheck/ginCheck"
 	"go-proj/library/ginMonitor"
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,8 +16,13 @@ func WebRoute(router *gin.Engine) {
 	logWare := &middleware.LogWare{}
 
 	//对所有的请求进行性能监控，一般来说生产环境，可以对指定的接口做性能监控
-	router.Use(logWare.Access(), logWare.Recover(), ginMonitor.Monitor())
-	//router.Use(logWare.Access(), logWare.Recover())
+	router.Use(logWare.Access(), logWare.Recover())
+
+	// 服务端超时设置
+	router.Use(middleware.TimeoutHandler(3 * time.Second))
+
+	// prometheus监控
+	router.Use(ginMonitor.Monitor())
 
 	router.NoRoute(middleware.NotFoundHandler())
 

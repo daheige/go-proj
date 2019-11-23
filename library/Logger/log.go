@@ -4,6 +4,7 @@ import (
 	"context"
 	"go-proj/library/helper"
 	"runtime"
+	"runtime/debug"
 	"strings"
 
 	"github.com/daheige/thinkgo/common"
@@ -107,7 +108,7 @@ func Recover(c interface{}) {
 			if ctx, ok := c.(context.Context); ok {
 				Emergency(ctx, "exec panic", map[string]interface{}{
 					"error":       err,
-					"error_trace": string(logger.Stack()),
+					"error_trace": string(debug.Stack()),
 				})
 
 				return
@@ -115,7 +116,7 @@ func Recover(c interface{}) {
 
 			logger.DPanic("exec panic", map[string]interface{}{
 				"error":       err,
-				"error_trace": string(logger.Stack()),
+				"error_trace": string(debug.Stack()),
 			})
 		}
 	}()
