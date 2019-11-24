@@ -1,7 +1,7 @@
 # go-proj 项目
 
     基于golang gin框架和grpc框架封装而成。
-    涉及到的包：gin,grpc,protobuf,daheige/thinkgo
+    涉及到的包：gin,grpc,protobuf,redigo,daheige/thinkgo
 
 # 目录结构
 
@@ -9,9 +9,6 @@
     ├── app                             应用目录
     │   ├── job                         job/task作业层
     │   ├── logic                       公共逻辑层，上下文采用标准上下文ctx
-    │   │   ├── BaseLogic.go
-    │   │   ├── HomeLogic.go
-    │   │   └── readme.md
     │   ├── rpc                         grpc service层
     │   │   └── service
     │   └── web                         web/api
@@ -25,8 +22,6 @@
     │   ├── nodejs-generate.sh
     │   ├── pb-generate.sh              golang pb和php pb代码生成脚本
     │   ├── php7.2_install.sh
-    │   ├── pprof-check-version.sh      pprof性能监控生成自动版本号
-    │   ├── web-check-version.sh        gin框架应用性能监控自动生成版本号
     │   └── web-init.sh                 golang rpc,web,job自动化构建脚本
     ├── conf                            项目配置文件目录
     ├── clients                         golang,php,nodejs客户端生成的代码
@@ -51,19 +46,10 @@
     │       └── main.go
     ├── go.mod
     ├── go.sum
-    ├── HealthCheck                     健康检查自动生成的代码
-    │   ├── ginCheck
-    │   │   └── checkversion.go
-    │   ├── pprofCheck
-    │   │   └── checkversion.go
-    │   └── readme.md
     ├── library                         公共库主要是第三方库，logger,gin metrics监控等
     │   ├── helper                      助手函数库
     │   ├── ginMonitor                  gin web/api打点监控
-    │   │   └── monitor.go
-    │   └── Logger                      日志服务
-    │       ├── log.go
-    │       └── readme.md
+    │   └── logger                      日志服务
     ├── LICENSE
     ├── logs                            运行日志目录，线上可放在别的目录,开发模式goland日志放在logs中
     │   ├── rpc
@@ -130,7 +116,6 @@
 # woker job/task 运行
 
     开发环境下运行job/task
-    $ sh bin/pprof-check-version.sh
     $ cp app.exam.yaml cmd/worker/app.yaml
     $ go run cmd/worker/worker.go
     2019/07/17 21:29:37 ===worker service start===
@@ -144,22 +129,11 @@
 
     构建web
     $ sh bin/web-init.sh web
-    初始化成功！
-    生成自动版本号
-    HealthCheck/pprofCheck/checkversion.go
-    生成checkVersion.go成功
-    HealthCheck/ginCheck/checkversion.go
-    生成checkVersion.go成功
     开始构建web二进制文件
     构建web成功！
 
     构建rpc
     $ sh bin/web-init.sh rpc
-    初始化成功！
-    生成自动版本号
-    HealthCheck/pprofCheck/checkversion.go
-    生成checkVersion.go成功
-
     Generating codes...
 
     generating golang stubs...
