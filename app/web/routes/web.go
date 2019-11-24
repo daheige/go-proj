@@ -3,8 +3,7 @@ package routes
 import (
 	"go-proj/app/web/controller"
 	"go-proj/app/web/middleware"
-	"go-proj/healthCheck/ginCheck"
-	"go-proj/library/ginMonitor"
+	"go-proj/library/ginmonitor"
 	"net/http"
 	"time"
 
@@ -12,6 +11,9 @@ import (
 )
 
 func WebRoute(router *gin.Engine) {
+	// 监控检测
+	router.GET("/check", HealthCheck)
+
 	//访问日志中间件处理
 	logWare := &middleware.LogWare{}
 
@@ -22,7 +24,7 @@ func WebRoute(router *gin.Engine) {
 	router.Use(middleware.TimeoutHandler(3 * time.Second))
 
 	// prometheus监控
-	router.Use(ginMonitor.Monitor())
+	router.Use(ginmonitor.Monitor())
 
 	router.NoRoute(middleware.NotFoundHandler())
 
@@ -32,8 +34,6 @@ func WebRoute(router *gin.Engine) {
 			"message": "ok",
 		})
 	})
-
-	router.GET("/check", ginCheck.HealthCheck)
 
 	homeCtrl := &controller.HomeController{}
 
@@ -58,6 +58,15 @@ func WebRoute(router *gin.Engine) {
 	// 测试将http 处理器和处理器函数包装为gin.Handler
 	router.GET("/foo", WrapHttpHandler(FooHandler()))
 	router.GET("/foo2", WrapHandlerFunc(FooHandlerFunc))
+}
+
+// HealthCheck 监控检测
+func HealthCheck(ctx *gin.Context) {
+	ctx.JSON(200, map[string]interface{}{
+		"code":    0,
+		"alive":   true,
+		"version": "2019-11-10 22:11",
+	})
 }
 
 // WrapHttpHandler 将http handler包装为gin.HandlerFunc

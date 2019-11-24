@@ -1,4 +1,7 @@
 package conf
 
-var AppEnv string
-var AppDebug bool
+// 配置文件对应的变量
+var (
+	AppEnv   string
+	AppDebug bool
+)

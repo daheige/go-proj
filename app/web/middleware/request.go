@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"go-proj/library/Logger"
+	"go-proj/library/logger"
 
 	"github.com/gin-gonic/gin"
 )
@@ -34,7 +34,7 @@ func TimeoutHandler(timeout time.Duration) func(c *gin.Context) {
 			if ctx.Err() == context.DeadlineExceeded {
 
 				// 记录操作日志
-				Logger.Error(c, "server timeout", nil)
+				logger.Error(c, "server timeout", nil)
 
 				// write response and abort the request
 				c.AbortWithStatusJSON(http.StatusGatewayTimeout, gin.H{

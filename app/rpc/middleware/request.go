@@ -13,7 +13,7 @@ import (
 
 	"github.com/daheige/thinkgo/common"
 
-	"go-proj/library/Logger"
+	"go-proj/library/logger"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/peer"
@@ -28,7 +28,7 @@ func RequestInterceptor(ctx context.Context, req interface{}, info *grpc.UnarySe
 			err = status.Errorf(codes.Internal, "%s", "server inner error")
 
 			//log.Println("exec error:", err)
-			Logger.Emergency(ctx, "exec error", map[string]interface{}{
+			logger.Emergency(ctx, "exec error", map[string]interface{}{
 				"reply":       res,
 				"panic_error": r,
 				"grpc_error":  err,
@@ -54,13 +54,13 @@ func RequestInterceptor(ctx context.Context, req interface{}, info *grpc.UnarySe
 	ctx = context.WithValue(ctx, "request_uri", info.FullMethod)
 	ctx = context.WithValue(ctx, "user_agent", "grpc")
 
-	Logger.Info(ctx, "exec begin", nil)
+	logger.Info(ctx, "exec begin", nil)
 
 	// 继续处理请求
 	res, err = handler(ctx, req)
 	ttd := time.Now().Sub(t).Seconds()
 	if err != nil {
-		Logger.Error(ctx, "exec error", map[string]interface{}{
+		logger.Error(ctx, "exec error", map[string]interface{}{
 			"reply":       res,
 			"trace_error": err,
 			"exec_time":   ttd,
@@ -69,7 +69,7 @@ func RequestInterceptor(ctx context.Context, req interface{}, info *grpc.UnarySe
 		return nil, err
 	}
 
-	Logger.Info(ctx, "exec end", map[string]interface{}{
+	logger.Info(ctx, "exec end", map[string]interface{}{
 		"exec_time": ttd,
 	})
 

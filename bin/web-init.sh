@@ -17,16 +17,6 @@ mkdir -p $root_dir/logs/$appName
 chmod 777 -R $root_dir/logs/$appName
 echo "初始化成功！"
 
-#自动版本号生成
-if [ -f $root_dir/bin/pprof-check-version.sh ];then
-    echo "生成自动版本号"
-    sh $root_dir/bin/pprof-check-version.sh
-fi
-
-if [ "$appName" = "web" ];then
-    sh $root_dir/bin/web-check-version.sh
-fi
-
 #rpc pb协议自动生成golang pb代码和php代码
 if [ "$appName" = "rpc" ];then
     sh $root_dir/bin/pb-generate.sh

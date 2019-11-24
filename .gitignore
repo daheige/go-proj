@@ -17,3 +17,8 @@ app.yaml
 healthCheck/ginCheck
 healthCheck/pprofCheck
 vendor/*
+pprof.cpu
+pprof.heap
+pprof.trace
+pprof.cpu*
+

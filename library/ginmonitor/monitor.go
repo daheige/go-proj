@@ -1,6 +1,6 @@
 //gin monitor打点监控
 //主要是对每个api/web请求做打点监控
-package ginMonitor
+package ginmonitor
 
 import (
 	"time"

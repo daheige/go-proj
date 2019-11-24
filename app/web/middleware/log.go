@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"go-proj/library/Logger"
 	"go-proj/library/helper"
+	"go-proj/library/logger"
 	"net"
 	"os"
 	"strings"
@@ -37,7 +37,7 @@ func (ware *LogWare) Access() gin.HandlerFunc {
 		ctx.Request = helper.ContextSet(ctx.Request, "user_agent", ctx.GetHeader("User-Agent"))
 		ctx.Request = helper.ContextSet(ctx.Request, "request_method", ctx.Request.Method)
 
-		Logger.Info(ctx.Request.Context(), "exec start", nil)
+		logger.Info(ctx.Request.Context(), "exec begin", nil)
 
 		ctx.Next()
 
@@ -51,7 +51,7 @@ func (ware *LogWare) Access() gin.HandlerFunc {
 			c["response_code"] = code
 		}
 
-		Logger.Info(ctx.Request.Context(), "exec end", c)
+		logger.Info(ctx.Request.Context(), "exec end", c)
 	}
 }
 
@@ -61,7 +61,7 @@ func (ware *LogWare) Recover() gin.HandlerFunc {
 		defer func() {
 			if err := recover(); err != nil {
 				//log.Printf("error:%v", err)
-				Logger.Emergency(ctx.Request.Context(), "exec panic", map[string]interface{}{
+				logger.Emergency(ctx.Request.Context(), "exec panic", map[string]interface{}{
 					"trace_error": err,
 					"trace_info":  string(common.CatchStack()),
 				})

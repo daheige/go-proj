@@ -1,4 +1,4 @@
-package Logger
+package logger
 
 import (
 	"context"
@@ -14,21 +14,18 @@ import (
 /**
 {
     "level":"info",
-    "time_local":"2019-07-13T22:13:00.934+0800",
-    "line":"/web/go/go-proj/app/extensions/Logger/log.go:61",
-    "msg":"exec end",
-    "tag":"index",
-    "request_uri":"/index",
-    "log_id":"6a03c58d-c324-bb24-304a-bc319d652e49",
-    "options":{
-        "exec_time":0.000566554
-    },
+    "time_local":"2019-11-24T20:07:28.472+0800",
+    "msg":"exec begin",
+    "options":null,
+    "ip":"127.0.0.1",
     "plat":"web",
-    "trace_line":51,
-    "trace_file":"/web/go/go-proj/app/web/middleware/LogWare.go",
-    "ip":"::1",
-    "ua":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.80 Safari/537.36",
-    "request_method":"GET"
+    "request_method":"GET",
+    "trace_line":40,
+    "request_uri":"/v1/info/123",
+    "log_id":"7bb48d0b-2ef4-fc62-0692-40e72db551ef",
+    "trace_file":"/web/go/go-proj/app/web/middleware/log.go",
+    "tag":"v1_info_123",
+    "ua":"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.80 Safari/537.36"
 }
 */
 
