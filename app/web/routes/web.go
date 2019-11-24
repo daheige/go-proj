@@ -63,9 +63,8 @@ func WebRoute(router *gin.Engine) {
 // HealthCheck 监控检测
 func HealthCheck(ctx *gin.Context) {
 	ctx.JSON(200, map[string]interface{}{
-		"code":    0,
-		"alive":   true,
-		"version": "2019-11-10 22:11",
+		"code":  0,
+		"alive": true,
 	})
 }
 
