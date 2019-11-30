@@ -8,10 +8,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/daheige/thinkgo/gutils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-
-	"github.com/daheige/thinkgo/common"
 
 	"go-proj/library/logger"
 
@@ -47,7 +46,7 @@ func RequestInterceptor(ctx context.Context, req interface{}, info *grpc.UnarySe
 
 	//log.Println("req: ", req)
 
-	logId := common.RndUuid()
+	logId := gutils.RndUuid()
 	ctx = context.WithValue(ctx, "log_id", logId)
 	ctx = context.WithValue(ctx, "client_ip", clientIp)
 	ctx = context.WithValue(ctx, "request_method", info.FullMethod)

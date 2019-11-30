@@ -10,7 +10,10 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/daheige/thinkgo/gpprof"
 	"github.com/daheige/thinkgo/monitor"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/robfig/cron/v3"
 
 	"github.com/daheige/thinkgo/logger"
@@ -42,7 +45,16 @@ func init() {
 	config.InitRedis()
 
 	//性能监控的端口port+1000,只能在内网访问
-	monitor.PrometheusHandler(port + 1000)
+	// 添加prometheus性能监控指标
+	prometheus.MustRegister(monitor.CpuTemp)
+	prometheus.MustRegister(monitor.HdFailures)
+
+	//性能监控的端口port+1000,只能在内网访问
+	httpMux := gpprof.New()
+
+	//添加prometheus metrics处理器
+	httpMux.Handle("/metrics", promhttp.Handler())
+	gpprof.Run(httpMux, port+1000)
 }
 
 func main() {

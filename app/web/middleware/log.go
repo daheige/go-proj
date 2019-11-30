@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/daheige/thinkgo/common"
-
+	"github.com/daheige/thinkgo/grecover"
+	"github.com/daheige/thinkgo/gutils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -27,7 +27,7 @@ func (ware *LogWare) Access() gin.HandlerFunc {
 		//如果采用了nginx x-request-id功能，可以获得x-request-id
 		logId := ctx.GetHeader("X-Request-Id")
 		if logId == "" {
-			logId = common.RndUuid() //日志id
+			logId = gutils.RndUuid() //日志id
 		}
 
 		//设置跟请求相关的ctx信息
@@ -63,7 +63,7 @@ func (ware *LogWare) Recover() gin.HandlerFunc {
 				//log.Printf("error:%v", err)
 				logger.Emergency(ctx.Request.Context(), "exec panic", map[string]interface{}{
 					"trace_error": err,
-					"trace_info":  string(common.CatchStack()),
+					"trace_info":  string(grecover.CatchStack()),
 				})
 
 				// Check for a broken connection, as it is not really a

@@ -7,7 +7,7 @@ import (
 	"runtime/debug"
 	"strings"
 
-	"github.com/daheige/thinkgo/common"
+	"github.com/daheige/thinkgo/gutils"
 	"github.com/daheige/thinkgo/logger"
 )
 
@@ -37,7 +37,7 @@ func writeLog(ctx context.Context, levelName string, message string, options map
 
 	logId := getStringByCtx(ctx, "log_id")
 	if logId == "" {
-		logId = common.RndUuid()
+		logId = gutils.RndUuid()
 	}
 
 	ua := getStringByCtx(ctx, "user_agent")

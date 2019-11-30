@@ -60,6 +60,25 @@
     │   └── hello.proto
     └── readme.md
 
+# 关于web层
+
+    基于gin1.5.0+框架封装而成
+    
+# 关于gin validate参数校验
+
+    gin1.5.0+ 基于gopkg.in/go-playground/validator.v9封装之后
+    将validator库的validate tag改成了binding方便gin使用
+    
+    参考手册：
+        https://github.com/go-playground/validator/tree/v9
+        https://godoc.org/github.com/go-playground/validator
+        https://github.com/go-playground/validator/blob/master/_examples/simple/main.go
+        
+# gin使用手册
+    
+    参考 https://github.com/gin-gonic/gin
+    中文翻译: https://github.com/daheige/gin-doc-cn 如果有更新，以官网为准
+    
 # go-grpc 和 php grpc 工具安装
 
     参考https://github.com/daheige/hg-grpc
