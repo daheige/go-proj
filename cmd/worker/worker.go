@@ -38,7 +38,9 @@ func init() {
 	logger.SetLogDir(log_dir)
 	logger.SetLogFile("go-job.log")
 	logger.MaxSize(500)
-	logger.InitLogger()
+
+	//由于app/extensions/logger基于thinkgo/logger又包装了一层，所以这里是3
+	logger.InitLogger(3)
 
 	//初始化配置文件
 	config.InitConf(config_dir)
