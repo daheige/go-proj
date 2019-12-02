@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"go-proj/library/helper"
 	"go-proj/library/logger"
 	"net"
@@ -61,9 +62,10 @@ func (ware *LogWare) Recover() gin.HandlerFunc {
 		defer func() {
 			if err := recover(); err != nil {
 				//log.Printf("error:%v", err)
-				logger.Emergency(ctx.Request.Context(), "exec panic", map[string]interface{}{
-					"trace_error": err,
-					"trace_info":  string(grecover.CatchStack()),
+				c := ctx.Request.Context()
+				logger.Emergency(c, "exec panic", map[string]interface{}{
+					"trace_error": fmt.Sprintf("%v", err),
+					"full_stack":  string(grecover.CatchStack()),
 				})
 
 				// Check for a broken connection, as it is not really a
@@ -73,23 +75,29 @@ func (ware *LogWare) Recover() gin.HandlerFunc {
 					if se, ok := ne.Err.(*os.SyscallError); ok {
 
 						errMsg := strings.ToLower(se.Error())
+
+						// 记录操作日志
+						logger.Emergency(c, "os syscall error", map[string]interface{}{
+							"trace_error": errMsg,
+						})
+
 						if strings.Contains(errMsg, "broken pipe") ||
-							strings.Contains(errMsg, "connection reset by peer") ||
+							strings.Contains(errMsg, "reset by peer") ||
+							strings.Contains(errMsg, "request headers: small read buffer") ||
+							strings.Contains(errMsg, "unexpected EOF") ||
 							strings.Contains(errMsg, "i/o timeout") {
 							brokenPipe = true
 						}
 					}
 				}
 
-				// 是否是 brokenPipe类型的错误
+				// 是否是 brokenPipe类型的错误，如果是，这里就不能往写入流中再写入内容
 				// 如果是该类型的错误，就不需要返回任何数据给客户端
 				// 代码参考gin recovery.go RecoveryWithWriter方法实现
 				// If the connection is dead, we can't write a status to it.
 				if brokenPipe {
 					ctx.Error(err.(error)) // nolint: errcheck
 					ctx.Abort()
-
-					return
 				}
 
 				//响应状态
@@ -97,8 +105,6 @@ func (ware *LogWare) Recover() gin.HandlerFunc {
 					"code":    500,
 					"message": "server error",
 				})
-
-				return
 			}
 		}()
 
