@@ -99,13 +99,15 @@ func main() {
 		}
 	}()
 
-	//平滑重启
+	//go 平滑重启
 	ch := make(chan os.Signal, 1)
 	// We'll accept graceful shutdowns when quit via SIGINT (Ctrl+C)
 	// recivie signal to exit main goroutine
-	//window signal
-	// signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, syscall.SIGHUP)
-	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM, syscall.SIGUSR2, os.Interrupt, syscall.SIGHUP)
+	// window signal
+	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, syscall.SIGHUP)
+
+	// linux signal support syscall.SIGUSR2
+	// signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM, syscall.SIGUSR2, os.Interrupt, syscall.SIGHUP)
 
 	// Block until we receive our signal.
 	sig := <-ch
