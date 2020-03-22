@@ -3,6 +3,11 @@
     基于golang gin框架和grpc框架封装而成。
     涉及到的包：gin,grpc,protobuf,redigo,daheige/thinkgo
 
+# go version选择
+
+    推荐使用go v1.14.1+版本
+    如果是用的go v1.14以下版本，请使用 go-proj/v1分支
+
 # 目录结构
 
     .
@@ -287,7 +292,7 @@
              $ docker run -it --name=go-proj-rpc -v /data/logs:/data/logs -v /data/www/go-proj:/data/conf -p 50051:50051 -p 51051:51051 go-proj-rpc:v1
 
     如果要在后台运行，docker run 加一个 -d参数
-
+    
     采用脚步构建镜像 sh bin/docker-build.sh web
 
 # 版权

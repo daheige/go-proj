@@ -28,38 +28,37 @@ import (
 )
 
 var port int
-var log_dir string
-var config_dir string
-var wait time.Duration //平滑重启的等待时间1s or 1m
+var logDir string
+var configDir string
+var wait time.Duration // 平滑重启的等待时间1s or 1m
 
 func init() {
 	flag.IntVar(&port, "port", 50051, "grpc port")
-	flag.StringVar(&log_dir, "log_dir", "./logs", "log dir")
-	flag.StringVar(&config_dir, "config_dir", "./", "config dir")
-	flag.DurationVar(&wait, "graceful-timeout", 3*time.Second, "the server gracefully reload. eg: 15s or 1m")
+	flag.StringVar(&logDir, "log_dir", "./logs", "log dir")
+	flag.StringVar(&configDir, "config_dir", "./", "config dir")
+	flag.DurationVar(&wait, "graceful_timeout", 3*time.Second, "the server gracefully reload. eg: 15s or 1m")
 	flag.Parse()
 
-	//日志文件设置
-	logger.SetLogDir(log_dir)
+	// 日志文件设置
+	logger.SetLogDir(logDir)
 	logger.SetLogFile("go-grpc.log")
 	logger.MaxSize(500)
 
-	//由于app/extensions/logger基于thinkgo/logger又包装了一层，所以这里是3
+	// 由于app/extensions/logger基于thinkgo/logger又包装了一层，所以这里是3
 	logger.InitLogger(3)
 
-	//初始化配置文件
-	config.InitConf(config_dir)
+	// 初始化配置文件
+	config.InitConf(configDir)
 	config.InitRedis()
 
-	//性能监控的端口port+1000,只能在内网访问
 	// 添加prometheus性能监控指标
 	prometheus.MustRegister(monitor.CpuTemp)
 	prometheus.MustRegister(monitor.HdFailures)
 
-	//性能监控的端口port+1000,只能在内网访问
+	// 性能监控的端口port+1000,只能在内网访问
 	httpMux := gpprof.New()
 
-	//添加prometheus metrics处理器
+	// 添加prometheus metrics处理器
 	httpMux.Handle("/metrics", promhttp.Handler())
 	gpprof.Run(httpMux, port+1000)
 
@@ -73,7 +72,7 @@ func main() {
 
 	var opts []grpc.ServerOption
 
-	//设置超时10s
+	// 设置超时10s
 	opts = append(opts, grpc.ConnectionTimeout(10*time.Second))
 
 	// 注册interceptor和中间件
@@ -86,7 +85,7 @@ func main() {
 	server := grpc.NewServer(opts...)
 	pb.RegisterGreeterServiceServer(server, &service.GreeterService{})
 
-	//其他grpc拦截器用法，看go grpc源代码，里面都有对应的方法
+	// 其他grpc拦截器用法，看go grpc源代码，里面都有对应的方法
 	// Go-gRPC 实践指南 https://www.bookstack.cn/read/go-grpc/chapter2-interceptor.md
 	log.Println("go-proj grpc run on:", port)
 
@@ -98,13 +97,15 @@ func main() {
 		}
 	}()
 
-	//平滑重启
+	// 平滑重启
 	ch := make(chan os.Signal, 1)
 	// We'll accept graceful shutdowns when quit via SIGINT (Ctrl+C)
 	// recivie signal to exit main goroutine
-	//window signal
-	// signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, syscall.SIGHUP)
-	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM, syscall.SIGUSR2, os.Interrupt, syscall.SIGHUP)
+	// window signal
+	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, syscall.SIGHUP)
+
+	// linux signal,please use this in production.
+	// signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM, syscall.SIGUSR2, os.Interrupt, syscall.SIGHUP)
 
 	// Block until we receive our signal.
 	sig := <-ch
