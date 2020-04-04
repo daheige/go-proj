@@ -20,6 +20,8 @@ import (
 
 	"go-proj/app/worker/job"
 	"go-proj/app/worker/task"
+
+	_ "go.uber.org/automaxprocs"
 )
 
 var port int

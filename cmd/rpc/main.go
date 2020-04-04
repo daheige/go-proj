@@ -24,6 +24,7 @@ import (
 
 	"github.com/daheige/thinkgo/logger"
 
+	_ "go.uber.org/automaxprocs"
 	"google.golang.org/grpc"
 )
 

@@ -21,6 +21,8 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	"github.com/gin-gonic/gin"
+
+	_ "go.uber.org/automaxprocs"
 )
 
 var port int
