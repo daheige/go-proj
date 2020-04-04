@@ -71,7 +71,7 @@
     
 # 关于gin validate参数校验
 
-    gin1.5.0+ 基于gopkg.in/go-playground/validator.v9封装之后
+    gin1.6.2+ 基于gopkg.in/go-playground/validator.v10封装之后
     将validator库的validate tag改成了binding方便gin使用
     
     参考手册：
@@ -88,32 +88,61 @@
 
     参考https://github.com/daheige/hg-grpc
 
-# 设置 golang 环境变量和 go mod 代理
+# golang 环境安装
 
-    vim ~/.bashrc
-    export GOROOT=/usr/local/go
-    export GOOS=linux
-    export GOPATH=/mygo
-    export GOSRC=$GOPATH/src
-    export GOBIN=$GOPATH/bin
-    export GOPKG=$GOPATH/pkg
+    golang下载地址:
+       https://golang.google.cn/dl/
 
-    #开启go mod机制
-    export GO111MODULE=auto
+    以go最新版本go1.14版本为例
+    https://dl.google.com/go/go1.14.1.linux-amd64.tar.gz
+    1、linux环境，下载
+        cd /usr/local/
+        sudo wget https://dl.google.com/go/go1.14.1.linux-amd64.tar.gz
+        sudo tar zxvf go1.14.1.linux-amd64.tar.gz
+        创建golang需要的目录
+        sudo mkdir /mygo
+        sudo mkdir /mygo/bin
+        sudo mkdir /mygo/src
+        sudo mkdir /mygo/pkg
 
-    #禁用cgo模块
-    export CGO_ENABLED=0
+    2、设置环境变量vim ~/.bashrc 或者sudo vim /etc/profile
+        export GOROOT=/usr/local/go
+        export GOOS=linux
+        export GOPATH=/mygo
+        export GOSRC=$GOPATH/src
+        export GOBIN=$GOPATH/bin
+        export GOPKG=$GOPATH/pkg
+        #开启go mod机制
+        export GO111MODULE=on
 
-    # 阿里云代理
-    export GOPROXY=https://mirrors.aliyun.com/goproxy/,direct
+        #禁用cgo模块
+        export CGO_ENABLED=0
 
-    # 也可以使用下面这个代理
-    #export GOPROXY=https://goproxy.cn,direct
+        export PATH=$GOROOT/bin:$GOBIN:$PATH
 
-    #下面一行请根据实际情况修改
-    export PATH=$GOROOT/bin:$GOBIN:$PATH
+    3、source ~/.bashrc 生效配置
 
-    保存退出:wq 使配置文件生效 source ~/.bashrc
+# 设置 goproxy 代理
+
+    go version >= 1.13
+    设置goproxy代理
+    vim ~/.bashrc添加如下内容:
+    export GOPROXY=https://goproxy.io,direct
+    或者
+    export GOPROXY=https://goproxy.cn,direct
+    或者
+    export GOPROXY=https://goproxy.cn,https://mirrors.aliyun.com/goproxy/,direct
+
+    让bashrc生效
+    source ~/.bashrc
+
+    go version < 1.13
+    vim ~/.bashrc添加如下内容：
+    export GOPROXY=https://goproxy.io
+    或者使用 export GOPROXY=https://athens.azurefd.net
+    或者使用 export GOPROXY=https://mirrors.aliyun.com/goproxy/
+    让bashrc生效
+    source ~/.bashrc
 
 # grpc 运行
 
