@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/daheige/thinkgo v1.10.0
-	github.com/gin-gonic/gin v1.6.0
+	github.com/gin-gonic/gin v1.6.2
 	github.com/golang/protobuf v1.3.5
 	github.com/gomodule/redigo v2.0.0+incompatible
 	github.com/prometheus/client_golang v1.5.1
