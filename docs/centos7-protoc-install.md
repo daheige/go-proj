@@ -43,23 +43,36 @@
     cd $GOPATH/pkg/mod/github.com/golang/protobuf@v1.3.5/proto
     go install
 
-# php grpc_php工具安装
+# centos7 php grpc_php工具安装
 
-    安装php_grpc工具
+    1、先安装 c-ares
+    cd /usr/local
+    yum install c-ares-devel c-ares
+    sudo mkdir /usr/lib/pkgconfig
+    cp /usr/local/lib/pkgconfig/libcares.pc  /usr/lib/pkgconfig
+    vi ~/.bashrc
+    export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+    source ~/.bashrc
+
+    2、开始安装grpc php代码生成工具
+
     cd /usr/local/
     sudo mkdir /usr/local/grpc
     sudo chown -R $USER /usr/local/grpc
     git clone https://github.com/grpc/grpc.git
-    
-    # 检出基于某个tag的分支，当然这里可以直接用master 
-    git checkout -b grpc v1.28.0
+
+    或者使用 git clone -b $(curl -L https://grpc.io/release) https://github.com/grpc/grpc 克隆分支
 
     cd /usr/local/grpc
+
+    git submodule update --init
+
+    # sudo make && sudo make install
     
-    git pull --recurse-submodules && git submodule update --init --recursive
-    make & sudo make install
-    make grpc_php_plugin
+    sudo make grpc_php_plugin
 
     #建立php grpc工具软链接
+
     sudo ln -s /usr/local/grpc/bins/opt/grpc_php_plugin /usr/bin/grpc_php_plugin
+    
     sudo chmod +x /usr/bin/grpc_php_plugin
