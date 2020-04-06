@@ -86,8 +86,11 @@
     
 # go-grpc 和 php grpc 工具安装
 
-    参考https://github.com/daheige/hg-grpc
-
+    ubuntu系统
+        参考 https://github.com/daheige/hg-grpc
+    centos系统
+        参考 docs/centos7-protoc-install.md
+        
 # golang 环境安装
 
     golang下载地址:

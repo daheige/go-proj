@@ -8,7 +8,7 @@
     sudo tar zxvf protobuf-3.11.4.tar.gz
     cd protobuf-3.11.4
     sudo yum install gcc-c++ cmake libtool
-    ]$ sudo mkdir /usr/local/protobuf
+    $ sudo mkdir /usr/local/protobuf
 
     需要编译, 在新版的 PB 源码中，是不包含 .configure 文件的，需要生成，此时先执行 ./autogen.sh 
     脚本说明如下：
