@@ -119,7 +119,9 @@ func init() {
 	proto.RegisterType((*HelloReply)(nil), "App.Grpc.Hello.HelloReply")
 }
 
-func init() { proto.RegisterFile("hello.proto", fileDescriptor_61ef911816e0a8ce) }
+func init() {
+	proto.RegisterFile("hello.proto", fileDescriptor_61ef911816e0a8ce)
+}
 
 var fileDescriptor_61ef911816e0a8ce = []byte{
 	// 158 bytes of a gzipped FileDescriptorProto
@@ -137,11 +139,11 @@ var fileDescriptor_61ef911816e0a8ce = []byte{
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ context.Context
-var _ grpc.ClientConn
+var _ grpc.ClientConnInterface
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the grpc package it is being compiled against.
-const _ = grpc.SupportPackageIsVersion4
+const _ = grpc.SupportPackageIsVersion6
 
 // GreeterServiceClient is the client API for GreeterService service.
 //
@@ -151,10 +153,10 @@ type GreeterServiceClient interface {
 }
 
 type greeterServiceClient struct {
-	cc *grpc.ClientConn
+	cc grpc.ClientConnInterface
 }
 
-func NewGreeterServiceClient(cc *grpc.ClientConn) GreeterServiceClient {
+func NewGreeterServiceClient(cc grpc.ClientConnInterface) GreeterServiceClient {
 	return &greeterServiceClient{cc}
 }
 

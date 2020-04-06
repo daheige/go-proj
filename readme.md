@@ -86,8 +86,11 @@
     
 # go-grpc 和 php grpc 工具安装
 
-    参考https://github.com/daheige/hg-grpc
-
+    ubuntu系统
+        参考 https://github.com/daheige/hg-grpc
+    centos系统
+        参考 docs/centos7-protoc-install.md
+        
 # golang 环境安装
 
     golang下载地址:
@@ -146,8 +149,10 @@
 
 # grpc 运行
 
-    1、生成pb代码
-        sh bin/pb-generate.sh
+    1、生成pb代码 （生成代码之前，请先安装好go-grpc 和 php grpc 工具）
+        sh bin/go-generate.sh
+        sh bin/php-generate.sh
+
     2、启动服务端
     $ cp app.exam.yaml app.yaml
     $ sh bin/app-start.sh rpc
