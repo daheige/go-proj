@@ -146,8 +146,10 @@
 
 # grpc 运行
 
-    1、生成pb代码
-        sh bin/pb-generate.sh
+    1、生成pb代码 （生成代码之前，请先安装好go-grpc 和 php grpc 工具）
+        sh bin/go-generate.sh
+        sh bin/php-generate.sh
+
     2、启动服务端
     $ cp app.exam.yaml app.yaml
     $ sh bin/app-start.sh rpc
