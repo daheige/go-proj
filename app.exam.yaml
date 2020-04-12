@@ -1,6 +1,6 @@
 #配置文件
 AppEnv: "local"
-AppName: go-api
+AppName: go-proj
 
 #redis配置
 RedisCommon:
@@ -12,3 +12,7 @@ RedisCommon:
   MaxIdle: 10 #表示连接池空闲连接列表的长度限制
   MaxActive: 100 #表示连接池中最大连接数限制
   IdleTimeout: 30 #最大的空闲连接等待时间，超过此时间后，空闲连接将被关闭
+
+# 当前web应用是否有grpc服务
+# 对于rpc这个层，这里是false
+WebHasGRPCService: true

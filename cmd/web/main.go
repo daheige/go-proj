@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	config "go-proj/conf"
+	"go-proj/conf/grpcconf"
 	"log"
 	"net/http"
 	"os"
@@ -48,6 +49,11 @@ func init() {
 	// 初始化配置文件
 	config.InitConf(configDir)
 	config.InitRedis()
+
+	// web服务中是否要初始化hello gRpc client
+	if config.WebHasGRPCService {
+		grpcconf.InitGRPCClient()
+	}
 
 	// 添加prometheus性能监控指标
 	prometheus.MustRegister(monitor.WebRequestTotal)
