@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// WebRoute gin web/api 路由设置
 func WebRoute(router *gin.Engine) {
 	// 监控检测
 	router.GET("/check", HealthCheck)
@@ -56,8 +57,11 @@ func WebRoute(router *gin.Engine) {
 	router.GET("/long-async", homeCtrl.LongAsync)
 
 	// 测试将http 处理器和处理器函数包装为gin.Handler
-	router.GET("/foo", WrapHttpHandler(FooHandler()))
-	router.GET("/foo2", WrapHandlerFunc(FooHandlerFunc))
+	router.GET("/foo", WrapHTTPHandler(FooHandler()))
+	router.GET("/foo2", WrapHTTPHandlerFunc(FooHandlerFunc))
+
+	// 测试gin web 调用grpc的方法
+	router.GET("/say-hello/:name", homeCtrl.SayHello)
 }
 
 // HealthCheck 监控检测
@@ -68,8 +72,8 @@ func HealthCheck(ctx *gin.Context) {
 	})
 }
 
-// WrapHttpHandler 将http handler包装为gin.HandlerFunc
-func WrapHttpHandler(h http.Handler) gin.HandlerFunc {
+// WrapHTTPHandler 将http handler包装为gin.HandlerFunc
+func WrapHTTPHandler(h http.Handler) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		h.ServeHTTP(ctx.Writer, ctx.Request)
 	}
@@ -82,12 +86,12 @@ func FooHandler() http.Handler {
 	})
 }
 
-// WrapHandlerFunc 将http handlerFunc处理器函数包装为gin.HandlerFunc
+// WrapHTTPHandlerFunc 将http handlerFunc处理器函数包装为gin.HandlerFunc
 // 由于http.Handler底层是一个interface上面有ServeHTTP方法
 // 而http.HandlerFunc实现了http.Handler的ServeHTTP方法,就相当于实现了http.Handler接口
 // gin.Context包含了w http.ResponseWriter, r *http.Request
 // 所以调用h.ServeHTTP然后包ctx.Writer,ctx.Request传入就可以处理http请求
-func WrapHandlerFunc(h http.HandlerFunc) gin.HandlerFunc {
+func WrapHTTPHandlerFunc(h http.HandlerFunc) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		h.ServeHTTP(ctx.Writer, ctx.Request)
 	}
