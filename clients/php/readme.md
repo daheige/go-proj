@@ -16,8 +16,8 @@
     mv composer2.json composer.json
     然后composer update
 
-    对于不支持protobuf的php版本，可以用用composer2.json 替换为composer.json
-
+    对于暂不支持php protobuf拓展的，可以用composer2.json 替换为composer.json
+    
 # composer镜像设置
 
     采用composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
