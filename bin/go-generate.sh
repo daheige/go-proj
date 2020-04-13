@@ -22,8 +22,10 @@ echo "\n\033[0;32mGenerating codes...\033[39;49;0m\n"
 #生成golang pb代码
 echo "generating golang stubs..."
 cd $protos_dir
+
+# echo $protoExec -I $protos_dir --go_out=plugins=grpc:$root_dir/pb $protos_dir/*.proto;
+
 $protoExec -I $protos_dir --go_out=plugins=grpc:$root_dir/pb $protos_dir/*.proto
-echo $protoExec -I $protos_dir --go_out=plugins=grpc:$root_dir/pb $protos_dir/*.proto;
 
 echo "generating golang code success"
 

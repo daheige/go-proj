@@ -9,7 +9,7 @@ function greet($name)
         'credentials' => Grpc\ChannelCredentials::createInsecure(),
     ]);
 
-    echo "检测App\Grpc\GPBMetadata\Hello\HelloReq是否存在".PHP_EOL;
+    echo "检测App\Grpc\GPBMetadata\Hello\HelloReq是否存在" . PHP_EOL;
     var_dump(class_exists("App\Grpc\Hello\HelloReq"));
     $request = new App\Grpc\Hello\HelloReq();
     $request->setName($name);
@@ -26,7 +26,7 @@ function greet($name)
         print_r($status->metadata);
     }
 
-    echo "name:".$reply->getName();
+    echo "name:" . $reply->getName();
     echo PHP_EOL;
 
     return $reply->getMessage();

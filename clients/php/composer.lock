@@ -1,23 +1,23 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d2cefe2a2588c5c7730ce5a63d7c123",
+    "content-hash": "b8851574912bd07566564bbcd3e6867a",
     "packages": [
         {
             "name": "grpc/grpc",
-            "version": "1.22.0",
+            "version": "1.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/grpc/grpc-php.git",
-                "reference": "88235e786ef9b55fcb049f00c5c5202f8086a299"
+                "reference": "a461cb1a975dde305c73168aa4494b90c3801c62"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/grpc/grpc-php/zipball/88235e786ef9b55fcb049f00c5c5202f8086a299",
-                "reference": "88235e786ef9b55fcb049f00c5c5202f8086a299",
+                "url": "https://api.github.com/repos/grpc/grpc-php/zipball/a461cb1a975dde305c73168aa4494b90c3801c62",
+                "reference": "a461cb1a975dde305c73168aa4494b90c3801c62",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -51,7 +51,7 @@
             "keywords": [
                 "rpc"
             ],
-            "time": "2019-07-03T19:57:39+00:00"
+            "time": "2020-01-23T19:27:18+00:00"
         }
     ],
     "packages-dev": [],
@@ -63,5 +63,6 @@
     "platform": {
         "php": ">=5.5.0"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
 }

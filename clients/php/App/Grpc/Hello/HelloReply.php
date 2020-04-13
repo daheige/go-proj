@@ -18,11 +18,11 @@ class HelloReply extends \Google\Protobuf\Internal\Message
     /**
      * Generated from protobuf field <code>string name = 1;</code>
      */
-    private $name = '';
+    protected $name = '';
     /**
      * Generated from protobuf field <code>string message = 2;</code>
      */
-    private $message = '';
+    protected $message = '';
 
     /**
      * Constructor.

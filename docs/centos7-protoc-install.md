@@ -124,3 +124,6 @@
         -rwxr-xr-x 1 root root 1882056 4月  10 01:38 grpc.so
         添加 grpc.so到php.ini
         extension=grpc.so
+
+        $ php -m | grep grpc
+        grpc
