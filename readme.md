@@ -147,6 +147,10 @@
     让bashrc生效
     source ~/.bashrc
 
+# php grpc工具和拓展安装
+
+    参考 docs/centos7-protoc-install.md
+
 # grpc 运行
 
     1、生成pb代码 （生成代码之前，请先安装好go-grpc 和 php grpc 工具）
