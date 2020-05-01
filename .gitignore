@@ -10,6 +10,8 @@ cmd/rpc/rpc.exe
 cmd/rpc/rpc
 cmd/web/web
 cmd/web/web.exe
+cmd/worker/worker
+cmd/worker/worker.exe
 checkVersion.go
 *_test.go
 *.log
