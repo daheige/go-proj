@@ -15,4 +15,4 @@ RedisCommon:
 
 # 当前web应用是否有grpc服务
 # 对于rpc这个层，这里是false
-WebHasGRPCService: true
+WebHasGRPCService: false
