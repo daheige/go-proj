@@ -12,5 +12,5 @@ require (
 	github.com/stretchr/testify v1.5.1 // indirect
 	go.uber.org/automaxprocs v1.3.0
 	google.golang.org/grpc v1.29.1
-	google.golang.org/protobuf v1.23.0
+	google.golang.org/protobuf v1.24.0
 )
