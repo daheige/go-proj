@@ -10,7 +10,7 @@ package App.Grpc.Hello; // 指定生成php文件的命名空间，防止命名�
 
 // service 定义开放调用的服务
 service GreeterService {
-    rpc SayHello (HelloReq) returns (HelloReply);
+    rpc SayHello (HelloReq) returns (HelloReply){};
 }
 
 // message 对应生成代码的 struct
