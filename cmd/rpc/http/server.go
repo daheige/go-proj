@@ -142,7 +142,8 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), wait)
 	defer cancel()
 
-	server.GracefulStop()
+	// todo 这里需要平滑退出http 服务就可以了
+	// server.GracefulStop()
 
 	<-ctx.Done()
 
