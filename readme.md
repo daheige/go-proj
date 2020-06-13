@@ -175,6 +175,56 @@
     name:hello,world
     call ok
 
+# grpc 和 http gw共用一个端口进行对外服务
+    
+    实现方式参考： https://eddycjy.com/posts/go/grpc-gateway/2019-06-22-grpc-gateway-tls/
+
+    1 安装好必要的依赖
+        go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
+        go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
+        go get -u github.com/golang/protobuf/protoc-gen-go
+    
+    2 生成pb文件 
+        % sh bin/go-generate.sh
+
+        Generating codes...
+
+        generating golang stubs...
+        generating golang code success
+
+        Generate codes successfully!
+
+    3 开始运行
+        % cd cmd/rpc
+        % go run http/server.go -config_dir=./
+        2020/06/13 19:57:02 maxprocs: Leaving GOMAXPROCS=12: CPU quota undefined
+        2020/06/13 19:57:02 config path:  /Users/heige/web/go/go-proj/cmd/rpc
+        2020/06/13 19:57:02 server PProf run on:  2339
+        2020/06/13 19:57:02 go-proj grpc run on: 1339
+
+        运行客户端
+        % go run clients/go/client_gw.go
+        2020/06/13 19:58:51 name:hello,golang grpc,message:call ok
+
+        这个时候去观察server服务端
+        2020/06/13 19:58:51 req method:  /App.Grpc.Hello.GreeterService/SayHello
+        2020/06/13 19:58:51 req data:  name:"golang grpc"
+
+        通过http方式，访问grpc服务，浏览器中访问下面url
+        http://localhost:1339/v1/say/123s
+        返回信息
+        {"name":"hello,123s","message":"call ok"}
+
+# grpc-gateway 官方提供的gw 实现方式
+
+    需要先启动grpc server通过endpoint 方式实现
+    参考地址： https://github.com/grpc-ecosystem/grpc-gateway
+
+# grpc拦截器使用
+
+    grpc拦截器用法，看go grpc源代码，里面都有对应的方法
+	Go-gRPC 实践指南 https://www.bookstack.cn/read/go-grpc/chapter2-interceptor.md
+
 # woker job/task 运行
 
     开发环境下运行job/task
