@@ -42,6 +42,7 @@ func init() {
 	logger.SetLogDir(logDir)
 	logger.SetLogFile("go-web.log")
 	logger.MaxSize(500)
+	logger.TraceFileLine(true) // 开启文件名和行数追踪
 
 	// 由于app/extensions/logger基于thinkgo/logger又包装了一层，所以这里是3
 	logger.InitLogger(3)

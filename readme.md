@@ -175,6 +175,27 @@
     name:hello,world
     call ok
 
+# grpc拦截器使用
+
+    grpc拦截器用法，看go grpc源代码，里面都有对应的方法
+	Go-gRPC 实践指南 https://www.bookstack.cn/read/go-grpc/chapter2-interceptor.md
+
+# grpc 中间件
+
+    go-proj/app/rpc/middleware/chain.go
+    定义多个中间件（拦截器）
+    // 注册interceptor和中间件
+    opts = append(opts, grpc.UnaryInterceptor(
+    	middleware.ChainUnaryServer(
+    		middleware.RequestInterceptor,
+    		middleware.Limit(&middleware.MockPassLimiter{}),
+    	)))
+
+    server := grpc.NewServer(opts...)
+    具体demo参考cmd/rpc/main.go
+
+    grpc中间件参考： https://github.com/grpc-ecosystem/go-grpc-middleware
+
 # grpc 和 http gw共用一个端口进行对外服务
     
     实现方式参考： https://eddycjy.com/posts/go/grpc-gateway/2019-06-22-grpc-gateway-tls/
@@ -214,16 +235,101 @@
         http://localhost:1339/v1/say/123s
         返回信息
         {"name":"hello,123s","message":"call ok"}
+        
+        如果发生http 请求出错就会抛出类似下面的错误提示：
+        {"error":"connection closed","code":14,"message":"connection closed"}
 
 # grpc-gateway 官方提供的gw 实现方式
 
     需要先启动grpc server通过endpoint 方式实现
     参考地址： https://github.com/grpc-ecosystem/grpc-gateway
 
-# grpc拦截器使用
+# grpc http gw 负载均衡和反向代理
 
-    grpc拦截器用法，看go grpc源代码，里面都有对应的方法
-	Go-gRPC 实践指南 https://www.bookstack.cn/read/go-grpc/chapter2-interceptor.md
+    # go grpc http层nginx配置
+    # 多个实例负载均衡
+    upstream gorpc_http {
+            server 127.0.0.1:1339 weight=80 max_fails=2 fail_timeout=10;
+            server 127.0.0.1:1340 weight=80 max_fails=2 fail_timeout=10;
+    }
+
+    # nginx配置
+    server {
+            listen 80;
+
+            # 根据实际情况设置
+            server_name myrpc.com www.myrpc.com *.myrpc.com;
+
+            # 访问日志设置
+            access_log /data/logs/mygrpc/go-rpc-access.log;
+            error_log /data/logs/mygrpc/go-rpc-error.log;
+
+            # error_page 404 /etc/nginx/html/40x.html;
+            # error_page 500 502 503 504 /50x.html;
+
+            location = /50x.html {
+                root /etc/nginx/html;
+            }
+
+            location @gorpc {
+                proxy_redirect off;
+                proxy_set_header Host $host;    #为反向设置原请求头
+                proxy_set_header X-Read-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-NginX-Proxy true;
+                proxy_set_header X-Request-Uri $request_uri;
+                proxy_set_header X-Referer $http_referer;
+                proxy_pass http://gorpc_http; #负载代理
+            }
+
+            location / {
+                try_files $uri @gorpc;
+            }
+    }
+
+
+    配置上面的nginx后，启动cmd/rpc/http/server.go
+    % go run http/server.go -config_dir=./ -port=1339
+    2020/06/14 10:31:49 maxprocs: Leaving GOMAXPROCS=12: CPU quota undefined
+    2020/06/14 10:31:49 config path:  /Users/heige/web/go/go-proj/cmd/rpc
+    2020/06/14 10:31:49 server PProf run on:  2339
+    2020/06/14 10:31:49 go-proj grpc run on: 1339
+    以同样的方式启动1340端口
+    % go run http/server.go -config_dir=./ -port=1340
+    2020/06/14 10:31:49 maxprocs: Leaving GOMAXPROCS=12: CPU quota undefined
+    2020/06/14 10:31:49 config path:  /Users/heige/web/go/go-proj/cmd/rpc
+    2020/06/14 10:31:49 server PProf run on:  2340
+    2020/06/14 10:31:49 go-proj grpc run on: 1340
+
+    开始访问 
+        http://localhost:1339/v1/say/daheige
+        http://localhost:1340/v1/say/daheige
+    
+    重启nginx
+    % /usr/local/nginx/bin/nginx -t
+    nginx: the configuration file /usr/local/etc/nginx/nginx.conf syntax is ok
+    nginx: configuration file /usr/local/etc/nginx/nginx.conf test is successful
+    % sudo /usr/local/nginx/bin/nginx -s reload
+
+    配置/etc/hosts
+    127.0.0.1 myrpc.com www.myrpc.com *.myrpc.com
+    保存退出
+    浏览器中访问
+    http://myrpc.com/v1/say/daheige
+    http://myrpc.com/v1/say/daheige134
+
+    通过查看日志，在1339，1340两个实例上都可以看到请求打过来
+    2020/06/14 10:45:43 req method:  /App.Grpc.Hello.GreeterService/SayHello
+    2020/06/14 10:45:43 req data:  name:"daheige"
+    2020/06/14 10:46:11 req method:  /App.Grpc.Hello.GreeterService/SayHello
+    2020/06/14 10:46:11 req data:  name:"daheige134"
+
+    2020/06/14 10:46:00 req method:  /App.Grpc.Hello.GreeterService/SayHello
+    2020/06/14 10:46:00 req data:  name:"daheige123"
+    2020/06/14 10:47:28 req method:  /App.Grpc.Hello.GreeterService/SayHello
+    2020/06/14 10:47:28 req data:  name:"daheige123"
+
+    实际生产环境中，可以采用clb在nginx上游做负载
 
 # woker job/task 运行
 
@@ -273,24 +379,9 @@
     1、可将bin下面的对应cmd下面的main.go生成的二进制文件，分发到线上部署，配置文件参考cmd/web/app.yaml
     2、上线二进制文件，需要指定app.yaml目录和logs目录
 
-# grpc 中间件
+# grpc server服务--nginx grpc_pass
 
-    chain.go
-    定义多个中间件（拦截器）
-    // 注册interceptor和中间件
-    opts = append(opts, grpc.UnaryInterceptor(
-    	middleware.ChainUnaryServer(
-    		middleware.RequestInterceptor,
-    		middleware.Limit(&middleware.MockPassLimiter{}),
-    	)))
-
-    server := grpc.NewServer(opts...)
-    具体demo参考cmd/rpc/main.go
-
-    grpc中间件参考： https://github.com/grpc-ecosystem/go-grpc-middleware
-
-# nginx grpc_pass
-
+    这种方式对于内网其他业务调用grpc server提供的方法，建议用这个方式来控制grpc server服务的负载均衡处理
     启动两个实例
     $ cd cmd/rpc
     $ go run main.go --port=50051

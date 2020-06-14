@@ -48,6 +48,7 @@ func init() {
 	logger.SetLogDir(logDir)
 	logger.SetLogFile("go-grpc.log")
 	logger.MaxSize(500)
+	logger.TraceFileLine(true) // 开启文件名和行数追踪
 
 	// 由于app/extensions/logger基于thinkgo/logger又包装了一层，所以这里是3
 	logger.InitLogger(3)
@@ -86,7 +87,7 @@ func grpcHandlerFunc(grpcServer *grpc.Server, otherHandler http.Handler) http.Ha
 }
 
 func main() {
-	var grpcAddress = fmt.Sprintf("0.0.0.0:%d", port)
+	var address = fmt.Sprintf("0.0.0.0:%d", port)
 	var opts []grpc.ServerOption
 
 	// 设置grpc服务参数
@@ -107,20 +108,36 @@ func main() {
 	dopts := []grpc.DialOption{grpc.WithInsecure()}
 	mux := http.NewServeMux()
 	gwmux := runtime.NewServeMux() // grpc-gateway/runtime mux
-	err := pb.RegisterGreeterServiceHandlerFromEndpoint(context.Background(), gwmux, grpcAddress, dopts)
+	err := pb.RegisterGreeterServiceHandlerFromEndpoint(context.Background(), gwmux, address, dopts)
 	if err != nil {
 		log.Fatalln("grpc register http gw err: ", err)
+		// 记录日志到文件中
+		logger.Fatal("grpc register http gw error", map[string]interface{}{
+			"trace_error": err.Error(),
+		})
 	}
 
 	mux.Handle("/", gwmux)
 
 	log.Println("go-proj grpc run on:", port)
+	httpServer := &http.Server{
+		Handler:           grpcHandlerFunc(server, mux), // 将grpc.Server服务转化为http.Handler
+		Addr:              address,
+		ReadHeaderTimeout: 5 * time.Second,  //read header timeout
+		ReadTimeout:       5 * time.Second,  //read request timeout
+		WriteTimeout:      10 * time.Second, //write timeout
+		IdleTimeout:       20 * time.Second, //tcp idle time
+	}
 
 	go func() {
 		defer logger.Recover()
 
-		if err := http.ListenAndServe(grpcAddress, grpcHandlerFunc(server, mux)); err != nil {
+		if err := httpServer.ListenAndServe(); err != nil {
 			log.Println("server run error: ", err)
+			// 记录日志到文件中
+			logger.Error("server run error", map[string]interface{}{
+				"trace_error": err.Error(),
+			})
 		}
 	}()
 
@@ -138,13 +155,20 @@ func main() {
 	sig := <-ch
 
 	log.Println("exit signal: ", sig.String())
+
+	logger.Info("exit signal: "+sig.String(), nil)
+
 	// Create a deadline to wait for.
 	ctx, cancel := context.WithTimeout(context.Background(), wait)
 	defer cancel()
 
-	// todo 这里需要平滑退出http 服务就可以了
-	// server.GracefulStop()
-
+	// 这里需要平滑退出http 服务就可以了
+	// Doesn't block if no connections, but will otherwise wait
+	// until the timeout deadline.
+	// Optionally, you could run srv.Shutdown in a goroutine and block on
+	// if your application should wait for other services
+	// to finalize based on context cancellation.
+	go httpServer.Shutdown(ctx) //在独立的携程中关闭服务器
 	<-ctx.Done()
 
 	log.Println("shutting down")
