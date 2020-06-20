@@ -287,6 +287,18 @@
             }
     }
 
+    # nginx grpc_pass配置
+    # 对内服务，如果以grpc server pb格式，可以直接连接到这个ip:port上，也就是宿主机 ip:30051 就可以
+    server {
+        listen 30051 http2;
+        #server_name localhost;
+
+        access_log /web/wwwlogs/go-grpc-access.log;
+
+        location / {
+            grpc_pass grpc://gorpc_http;
+        }
+    }
 
     配置上面的nginx后，启动cmd/rpc/http/server.go
     % go run http/server.go -config_dir=./ -port=1339
@@ -329,7 +341,14 @@
     2020/06/14 10:47:28 req method:  /App.Grpc.Hello.GreeterService/SayHello
     2020/06/14 10:47:28 req data:  name:"daheige123"
 
-    实际生产环境中，可以采用clb在nginx上游做负载
+    如果使用pb格式调用go grpc server
+    运行grpc client
+    $ go run clients/go/client_ng_grpc.go
+    2020/06/20 21:01:18 name:hello,golang grpc,message:call ok
+
+    实际生产环境中，可以同时提供http格式和grpc pb格式的调用
+    对外可以采用http协议，用clb在nginx上游做负载
+    对内服务，pb格式提供grpc server服务，直接用上面的nginx grpc_pass 机制就可以
 
 # woker job/task 运行
 
