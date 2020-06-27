@@ -53,6 +53,9 @@ mv $root_dir/clients/php/GPBMetadata $php_client_dir/App/Grpc/
 # mac unix系统
 sed -i "" 's/GPBMetadata/App\\\Grpc\\\GPBMetadata/g' `grep GPBMetadata -rl $php_client_dir/App/Grpc/`
 
+sed -i "" 's/\\App\\Grpc\\GPBMetadata\\Google/\/\/ \\App\Grpc\\\GPBMetadata\\\Google/g' `grep GPBMetadata -rl $php_client_dir/App/Grpc/`
+
+
 echo "\n\033[0;32mGenerate codes successfully!\033[39;49;0m\n"
 
 exit 0
