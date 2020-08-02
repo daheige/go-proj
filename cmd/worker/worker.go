@@ -38,7 +38,7 @@ func init() {
 
 	// 日志文件设置
 	logger.SetLogDir(logDir)
-	logger.SetLogFile("go-job.log")
+	logger.SetLogFile("go-worker.log")
 	logger.MaxSize(500)
 	logger.TraceFileLine(true) // 开启文件名和行数追踪
 
