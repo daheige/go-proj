@@ -35,4 +35,3 @@ echo "generating golang code success"
 echo "\n\033[0;32mGenerate codes successfully!\033[39;49;0m\n"
 
 exit 0
-
