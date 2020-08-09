@@ -15,7 +15,8 @@ fi
 
 #rpc pb协议自动生成golang pb代码和php代码
 if [ "$appName" = "rpc" ];then
-    sh $root_dir/bin/pb-generate.sh
+    sh $root_dir/bin/go-generate.sh
+    sh $roo_dir/bin/php-generate.sh
 fi
 
 # 开始构建docker镜像
