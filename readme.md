@@ -476,17 +476,17 @@
     web层:
         $ docker build -t go-proj-web:v1 -f web-Dockerfile .
         运行：
-        $ docker run -it --name=go-proj-web -v /data/logs:/data/logs -v /data/www/go-proj:/data/conf -p 1338:1338 -p 2338:2338 go-proj-web:v1
+        $ docker run -itd --name=go-proj-web -v /data/logs:/data/logs -v /data/www/go-proj:/data/conf -p 1338:1338 -p 2338:2338 go-proj-web:v1
 
     job层:
-        $ docker build -it go-proj-job:v1 -f job-Dockerfile .
+        $ docker build -itd go-proj-job:v1 -f job-Dockerfile .
         运行:
         $ docker run -it --name=go-proj-job -v /data/logs:/data/logs -v /data/www/go-proj:/data/conf -p 30031:30031 go-proj-job:v1
 
     rpc层:
         $ docker build -t go-proj-job:v1 -f job-Dockerfile .
         运行:
-             $ docker run -it --name=go-proj-rpc -v /data/logs:/data/logs -v /data/www/go-proj:/data/conf -p 50051:50051 -p 51051:51051 go-proj-rpc:v1
+             $ docker run -itd --name=go-proj-rpc -v /data/logs:/data/logs -v /data/www/go-proj:/data/conf -p 50051:50051 -p 51051:51051 go-proj-rpc:v1
 
     如果要在后台运行，docker run 加一个 -d参数
     
