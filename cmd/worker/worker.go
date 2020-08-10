@@ -33,7 +33,7 @@ func init() {
 	flag.IntVar(&port, "port", 30031, "app listen port")
 	flag.StringVar(&logDir, "log_dir", "./logs", "log dir")
 	flag.StringVar(&configDir, "config_dir", "./", "config dir")
-	flag.DurationVar(&wait, "graceful_timeout", 3*time.Second, "the server gracefully reload. eg: 15s or 1m")
+	flag.DurationVar(&wait, "graceful-timeout", 3*time.Second, "the server gracefully reload. eg: 15s or 1m")
 	flag.Parse()
 
 	// 日志文件设置
