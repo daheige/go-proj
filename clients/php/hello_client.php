@@ -1,7 +1,7 @@
 <?php
 require dirname(__FILE__) . '/vendor/autoload.php';
 
-const GRPC_ADDRESS = '127.0.0.1:50051';
+const GRPC_ADDRESS = "192.168.0.11:50051";
 
 function greet($name)
 {
