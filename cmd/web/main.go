@@ -4,14 +4,15 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	config "go-proj/conf"
-	"go-proj/conf/grpcconf"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	config "go-proj/conf"
+	"go-proj/conf/grpcconf"
 
 	"go-proj/app/web/routes"
 
@@ -95,7 +96,7 @@ func main() {
 	server := &http.Server{
 		Handler:           router,
 		Addr:              fmt.Sprintf("0.0.0.0:%d", port),
-		IdleTimeout:       20 * time.Second, //tcp idle time
+		IdleTimeout:       20 * time.Second, // tcp idle time
 		ReadHeaderTimeout: 10 * time.Second,
 		ReadTimeout:       10 * time.Second,
 		WriteTimeout:      15 * time.Second,
@@ -107,7 +108,17 @@ func main() {
 		defer logger.Recover()
 
 		if err := server.ListenAndServe(); err != nil {
-			log.Println(err)
+			if err != http.ErrServerClosed {
+				logger.Info("server close error", map[string]interface{}{
+					"trace_error": err.Error(),
+				})
+
+				log.Println(err)
+
+				return
+			}
+
+			log.Println("server will exit...")
 		}
 	}()
 
@@ -137,5 +148,5 @@ func main() {
 	go server.Shutdown(ctx) // 在独立的携程中关闭服务器
 	<-ctx.Done()
 
-	log.Println("shutting down")
+	log.Println("server shutting down")
 }
