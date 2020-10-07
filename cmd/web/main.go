@@ -11,26 +11,25 @@ import (
 	"syscall"
 	"time"
 
+	"go-proj/app/web/routes"
 	config "go-proj/conf"
 	"go-proj/conf/grpcconf"
-
-	"go-proj/app/web/routes"
 
 	"github.com/daheige/thinkgo/gpprof"
 	"github.com/daheige/thinkgo/logger"
 	"github.com/daheige/thinkgo/monitor"
+	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-
-	"github.com/gin-gonic/gin"
-
 	_ "go.uber.org/automaxprocs"
 )
 
-var port int
-var logDir string
-var configDir string
-var wait time.Duration // 平滑重启的等待时间1s or 1m
+var (
+	port      int
+	logDir    string
+	configDir string
+	wait      time.Duration // 平滑重启的等待时间1s or 1m
+)
 
 func init() {
 	flag.IntVar(&port, "port", 1338, "app listen port")
@@ -113,8 +112,7 @@ func main() {
 					"trace_error": err.Error(),
 				})
 
-				log.Println(err)
-
+				log.Println("server close error: ", err.Error())
 				return
 			}
 
@@ -136,17 +134,39 @@ func main() {
 	sig := <-ch
 
 	log.Println("exit signal: ", sig.String())
-	// Create a deadline to wait for.
-	ctx, cancel := context.WithTimeout(context.Background(), wait)
-	defer cancel()
+
+	// 平滑退出之前，先停止接收请求，但老的请求，继续响应
+	// SetKeepAlivesEnabled controls whether HTTP keep-alives are enabled.
+	// By default, keep-alives are always enabled. Only very
+	// resource-constrained environments or servers in the process of
+	// shutting down should disable them.
+	server.SetKeepAlivesEnabled(false)
 
 	// Doesn't block if no connections, but will otherwise wait
 	// until the timeout deadline.
 	// Optionally, you could run srv.Shutdown in a goroutine and block on
 	// if your application should wait for other services
 	// to finalize based on context cancellation.
-	go server.Shutdown(ctx) // 在独立的携程中关闭服务器
-	<-ctx.Done()
+	done := make(chan error, 1)
+	go func() {
+		defer logger.Recover()
+		defer close(done)
 
-	log.Println("server shutting down")
+		// Create a deadline to wait for.
+		ctx, cancel := context.WithTimeout(context.Background(), wait)
+		defer cancel()
+
+		err := server.Shutdown(ctx)
+		if err != nil {
+			logger.Error("server shutdown error", map[string]interface{}{
+				"trace_error": err.Error(),
+			})
+
+			log.Println("server shutdown error: ", err.Error())
+		}
+	}()
+
+	<-done
+	log.Println("shutdown success")
+	logger.Info("server shutdown success", nil)
 }
