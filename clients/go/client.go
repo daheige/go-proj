@@ -1,19 +1,20 @@
 package main
 
 import (
+	"context"
 	"log"
 	"os"
 
-	pb "go-proj/pb"
-
-	"context"
+	"go-proj/pb"
 
 	"google.golang.org/grpc"
 )
 
 const (
-	address = "192.168.0.11:50051"
-	// address     = "localhost:50050" //连接nginx grpc端口
+	address = "127.0.0.1:50051"
+	// address = "localhost:1339" // http gw address
+	// address     = "localhost:50050" // 连接nginx grpc端口
+	// address     = "localhost:30051" // 连接nginx grpc端口
 	defaultName = "golang grpc"
 )
 
