@@ -4,13 +4,16 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"go-proj/app/rpc/middleware"
 	"log"
 	"net"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"google.golang.org/grpc/reflection"
+
+	"go-proj/app/rpc/middleware"
 
 	"github.com/daheige/thinkgo/gpprof"
 	"github.com/daheige/thinkgo/monitor"
@@ -28,10 +31,12 @@ import (
 	"google.golang.org/grpc"
 )
 
-var port int
-var logDir string
-var configDir string
-var wait time.Duration // 平滑重启的等待时间1s or 1m
+var (
+	port      int
+	logDir    string
+	configDir string
+	wait      time.Duration // 平滑重启的等待时间1s or 1m
+)
 
 func init() {
 	flag.IntVar(&port, "port", 50051, "grpc port")
@@ -44,7 +49,7 @@ func init() {
 	logger.SetLogDir(logDir)
 	logger.SetLogFile("go-grpc.log")
 	logger.MaxSize(500)
-	logger.TraceFileLine(true) //开启文件名和行数追踪
+	logger.TraceFileLine(true) // 开启文件名和行数追踪
 
 	// 由于app/extensions/logger基于thinkgo/logger又包装了一层，所以这里是3
 	logger.InitLogger(3)
@@ -72,8 +77,7 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	var opts []grpc.ServerOption
-
+	opts := make([]grpc.ServerOption, 0, 4)
 	// 设置超时10s
 	opts = append(opts, grpc.ConnectionTimeout(10*time.Second))
 
@@ -86,6 +90,9 @@ func main() {
 
 	server := grpc.NewServer(opts...)
 	pb.RegisterGreeterServiceServer(server, &service.GreeterService{})
+
+	// register reflection service on gRPC server.
+	reflection.Register(server)
 
 	// 其他grpc拦截器用法，看go grpc源代码，里面都有对应的方法
 	// Go-gRPC 实践指南 https://www.bookstack.cn/read/go-grpc/chapter2-interceptor.md
@@ -113,13 +120,26 @@ func main() {
 	sig := <-ch
 
 	log.Println("exit signal: ", sig.String())
+
+	done := make(chan struct{}, 1)
 	// Create a deadline to wait for.
 	ctx, cancel := context.WithTimeout(context.Background(), wait)
 	defer cancel()
+	go func() {
+		defer close(done)
 
-	server.GracefulStop()
+		server.GracefulStop()
+	}()
 
-	<-ctx.Done()
+	select {
+	case <-done:
+		log.Println("shutdown success")
+	case <-ctx.Done():
+		e := ctx.Err()
+		logger.Error("server shutdown timeout", map[string]interface{}{
+			"trace_error": e.Error(),
+		})
+		log.Println("shutdown timeout,reason: ", e.Error())
+	}
 
-	log.Println("shutting down")
 }
