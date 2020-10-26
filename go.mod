@@ -3,7 +3,7 @@ module go-proj
 go 1.13
 
 require (
-	github.com/daheige/thinkgo v1.11.11
+	github.com/daheige/thinkgo v1.11.14
 	github.com/gin-gonic/gin v1.6.3
 	github.com/golang/protobuf v1.4.2
 	github.com/gomodule/redigo v1.8.2
