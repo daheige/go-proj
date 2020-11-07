@@ -1,5 +1,5 @@
 # web层docker构建镜像
-FROM golang:1.13.4 AS go-builder-worker
+FROM golang:1.15.4 AS go-builder-worker
 
 # 设置golang环境变量和禁用CGO,开启go mod机制
 ENV  GO111MODULE=on CGO_ENABLED=0 \
@@ -13,14 +13,14 @@ RUN cd /mygo/go-proj && go mod tidy \
     && cd cmd/worker \
     && go build -o /mygo/go-proj-worker
 
-FROM alpine:3.10
+FROM alpine:3.12
 
 #解决docker时区问题和中文乱码问题
 ENV TZ=Asia/Shanghai LANG="zh_CN.UTF-8"
 
 # 解决http x509证书问题，需要安装证书
 RUN echo $GOPROXY && echo "export LC_ALL=$LANG"  >>  /etc/profile \
-    && echo "https://mirror.tuna.tsinghua.edu.cn/alpine/v3.10/main/" > /etc/apk/repositories \
+    && echo "https://mirror.tuna.tsinghua.edu.cn/alpine/v3.12/main/" > /etc/apk/repositories \
     && apk update \
     && apk upgrade \
     && apk --no-cache add tzdata ca-certificates bash vim bash-doc bash-completion curl \
