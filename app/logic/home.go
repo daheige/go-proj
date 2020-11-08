@@ -1,8 +1,9 @@
 package logic
 
 import (
-	"go-proj/library/helper"
 	"log"
+
+	"github.com/daheige/go-proj/library/helper"
 )
 
 type HomeLogic struct {

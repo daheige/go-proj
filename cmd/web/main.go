@@ -11,9 +11,9 @@ import (
 	"syscall"
 	"time"
 
-	"go-proj/app/web/routes"
-	config "go-proj/conf"
-	"go-proj/conf/grpcconf"
+	"github.com/daheige/go-proj/app/web/routes"
+	config "github.com/daheige/go-proj/conf"
+	"github.com/daheige/go-proj/conf/grpcconf"
 
 	"github.com/daheige/thinkgo/gpprof"
 	"github.com/daheige/thinkgo/logger"

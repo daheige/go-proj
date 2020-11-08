@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"go-proj/library/logger"
+	"github.com/daheige/go-proj/library/logger"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/peer"

@@ -1,4 +1,4 @@
-module go-proj
+module github.com/daheige/go-proj
 
 go 1.13
 

@@ -1,11 +1,12 @@
 package routes
 
 import (
-	"go-proj/app/web/controller"
-	"go-proj/app/web/middleware"
-	"go-proj/library/ginmonitor"
 	"net/http"
 	"time"
+
+	"github.com/daheige/go-proj/app/web/controller"
+	"github.com/daheige/go-proj/app/web/middleware"
+	"github.com/daheige/go-proj/library/ginmonitor"
 
 	"github.com/gin-gonic/gin"
 )

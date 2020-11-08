@@ -2,12 +2,13 @@ package middleware
 
 import (
 	"fmt"
-	"go-proj/library/helper"
-	"go-proj/library/logger"
 	"net"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/daheige/go-proj/library/helper"
+	"github.com/daheige/go-proj/library/logger"
 
 	"github.com/daheige/thinkgo/grecover"
 	"github.com/daheige/thinkgo/gutils"

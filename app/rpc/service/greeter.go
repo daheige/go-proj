@@ -2,8 +2,9 @@ package service
 
 import (
 	"context"
-	"go-proj/pb"
 	"log"
+
+	"github.com/daheige/go-proj/pb"
 )
 
 type GreeterService struct {

@@ -11,24 +11,19 @@ import (
 	"syscall"
 	"time"
 
-	"google.golang.org/grpc/reflection"
-
-	"go-proj/app/rpc/middleware"
-
 	"github.com/daheige/thinkgo/gpprof"
+	"github.com/daheige/thinkgo/logger"
 	"github.com/daheige/thinkgo/monitor"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-
-	config "go-proj/conf"
-	"go-proj/pb"
-
-	"go-proj/app/rpc/service"
-
-	"github.com/daheige/thinkgo/logger"
-
 	_ "go.uber.org/automaxprocs"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
+
+	"github.com/daheige/go-proj/app/rpc/middleware"
+	"github.com/daheige/go-proj/app/rpc/service"
+	config "github.com/daheige/go-proj/conf"
+	"github.com/daheige/go-proj/pb"
 )
 
 var (

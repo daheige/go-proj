@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"go-proj/library/logger"
+	"github.com/daheige/go-proj/library/logger"
 
 	"github.com/gin-gonic/gin"
 )

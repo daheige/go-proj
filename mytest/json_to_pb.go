@@ -2,15 +2,14 @@ package main
 
 import (
 	"encoding/json"
-	"go-proj/app/rpc/service"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"net/http/pprof"
 	"strings"
 
-	"go-proj/pb"
-
+	"github.com/daheige/go-proj/app/rpc/service"
+	"github.com/daheige/go-proj/pb"
 	"github.com/golang/protobuf/proto"
 )
 

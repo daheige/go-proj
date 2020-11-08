@@ -2,17 +2,18 @@ package controller
 
 import (
 	"context"
-	"go-proj/app/logic"
-	"go-proj/conf/grpcconf"
-	"go-proj/library/logger"
 	"log"
 	"time"
 
-	config "go-proj/conf"
+	"github.com/daheige/go-proj/app/logic"
+	"github.com/daheige/go-proj/conf/grpcconf"
+	"github.com/daheige/go-proj/library/logger"
+
+	config "github.com/daheige/go-proj/conf"
 
 	"github.com/gin-gonic/gin"
 
-	pb "go-proj/pb"
+	pb "github.com/daheige/go-proj/pb"
 )
 
 // HomeController home ctrl.

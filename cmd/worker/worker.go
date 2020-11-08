@@ -3,12 +3,13 @@ package main
 import (
 	"context"
 	"flag"
-	config "go-proj/conf"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	config "github.com/daheige/go-proj/conf"
 
 	"github.com/daheige/thinkgo/gpprof"
 	"github.com/daheige/thinkgo/monitor"
@@ -18,8 +19,8 @@ import (
 
 	"github.com/daheige/thinkgo/logger"
 
-	"go-proj/app/worker/job"
-	"go-proj/app/worker/task"
+	"github.com/daheige/go-proj/app/worker/job"
+	"github.com/daheige/go-proj/app/worker/task"
 
 	_ "go.uber.org/automaxprocs"
 )

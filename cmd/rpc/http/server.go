@@ -4,7 +4,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"go-proj/app/rpc/middleware"
 	"log"
 	"net/http"
 	"os"
@@ -12,6 +11,8 @@ import (
 	"strings"
 	"syscall"
 	"time"
+
+	"github.com/daheige/go-proj/app/rpc/middleware"
 
 	"github.com/daheige/thinkgo/gpprof"
 	"github.com/daheige/thinkgo/monitor"
@@ -21,10 +22,10 @@ import (
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
-	config "go-proj/conf"
-	"go-proj/pb"
+	config "github.com/daheige/go-proj/conf"
+	"github.com/daheige/go-proj/pb"
 
-	"go-proj/app/rpc/service"
+	"github.com/daheige/go-proj/app/rpc/service"
 
 	"github.com/daheige/thinkgo/logger"
 
