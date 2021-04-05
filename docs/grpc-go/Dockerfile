@@ -10,12 +10,10 @@ RUN apt-get update && apt-get install -y apt-utils zip unzip curl  vim cmake mak
 RUN wget -O protoc.zip https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOC_VER}/protoc-${PROTOC_VER}-linux-x86_64.zip \  
     && mkdir -p /protoc && unzip protoc.zip -d /protoc
 
-RUN go env -w GO111MODULE=on; \
-    go env -w CGO_ENABLED= 0;\
-    go env -w GOPROXY=https://goproxy.cn,https://mirrors.aliyun.com/goproxy/,direct && \
+RUN go env -w GO111MODULE=on; go env -w GOPROXY=https://goproxy.cn,https://mirrors.aliyun.com/goproxy/,direct;go env -w CGO_ENABLED=0 && \
     go get -u google.golang.org/grpc  && \
-    github.com/golang/protobuf/proto  && \
-    github.com/golang/protobuf/protoc-gen-go  && \
+    go get -u github.com/golang/protobuf/proto  && \
+    go get -u github.com/golang/protobuf/protoc-gen-go  && \
     go get -u google.golang.org/grpc/cmd/protoc-gen-go-grpc  && \
     go get  -u  github.com/golang/mock/mockgen  && \
     go get -u   github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway  && \
