@@ -1,15 +1,13 @@
 FROM golang:1.16.3
 
-ENV PATH="/protoc/bin:${PATH}"
-
 # build golang environment
 ENV PROTOC_VER 3.15.6
 
-RUN apt-get update && \
-    apt-get -y install autoconf automake cmake make libtool curl g++ zip unzip vim git;
+RUN apt-get update && apt-get install -y apt-utils zip unzip;
 
-RUN mkdir -p /tmp/temp && wget -q -P /tmp/temp/ https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOC_VER}/protoc-${PROTOC_VER}-linux-x86_64.zip && \
-    cd /usr && unzip /tmp/temp/protoc-${PROTOC_VER}-linux-x86_64.zip && rm -rf /tmp/temp/*
+RUN wget -q -P /tmp/temp/ https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOC_VER}/protoc-${PROTOC_VER}-linux-x86_64.zip && \
+    cd /usr && unzip /tmp/temp/protoc-${PROTOC_VER}-linux-x86_64.zip;
+
 
 RUN go env -w GO111MODULE=on; go env -w GOPROXY=https://goproxy.cn,https://mirrors.aliyun.com/goproxy/,direct;go env -w CGO_ENABLED=0 &&  \
     go get -u github.com/golang/protobuf/proto && \
