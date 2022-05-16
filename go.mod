@@ -4,7 +4,7 @@ go 1.13
 
 require (
 	github.com/daheige/thinkgo v1.11.22
-	github.com/gin-gonic/gin v1.6.3
+	github.com/gin-gonic/gin v1.7.0
 	github.com/golang/protobuf v1.4.3
 	github.com/gomodule/redigo v1.8.3
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
