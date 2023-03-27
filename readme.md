@@ -4,10 +4,71 @@
     涉及到的包：gin,grpc,protobuf,redigo,daheige/thinkgo
 
 # go version选择
+    推荐使用go v1.16.15+版本
+# golang linux环境安装
 
-    推荐使用go v1.13.15+版本
+golang下载地址:
+https://golang.google.cn/dl/
 
-# 目录结构
+以go最新版本go1.16.15版本为例
+https://golang.google.cn/dl/go1.20.2.linux-amd64.tar.gz
+1. linux环境(centos,ubuntu操作系统)，下载
+```shell
+cd /usr/local/
+    sudo wget https://golang.google.cn/dl/go1.16.15.linux-amd64.tar.gz
+    sudo tar zxvf go1.16.15.linux-amd64.tar.gz
+    # 创建golang需要的目录
+    sudo mkdir /mygo
+    sudo mkdir /mygo/bin
+    sudo mkdir /mygo/src
+    sudo mkdir /mygo/pkg
+```
+2. 设置环境变量vim ~/.bashrc 或者sudo vim /etc/profile
+```shell
+    export GOROOT=/usr/local/go
+    export GOOS=linux
+    export GOPATH=/mygo
+    export GOSRC=$GOPATH/src
+    export GOBIN=$GOPATH/bin
+    export GOPKG=$GOPATH/pkg
+    
+    #开启go mod机制
+    export GO111MODULE=on
+
+    #禁用cgo模块
+    export CGO_ENABLED=0
+    export GOPROXY=https://goproxy.cn,direct
+
+    export PATH=$GOROOT/bin:$GOBIN:$PATH
+```
+:wq 保存退出
+3. source ~/.bashrc 生效配置
+
+# golang mac系统安装
+只需要下载 https://golang.google.cn/dl/go1.16.15.darwin-amd64.pkg 然后点击下一步，下一步就可以安装完毕
+环境变量配置：
+vim ~/.bash_profile
+```shell
+    export GOROOT=/usr/local/go
+    export GOOS=linux
+    export GOPATH=/mygo
+    export GOSRC=$GOPATH/src
+    export GOBIN=$GOPATH/bin
+    export GOPKG=$GOPATH/pkg
+    #开启go mod机制
+    export GO111MODULE=on
+    
+    #禁用cgo模块
+    export CGO_ENABLED=0
+    
+    #配置goproxy代理
+    export GOPROXY=https://goproxy.cn,direct
+    export PATH=$GOROOT/bin:$GOBIN:$PATH
+```
+
+:wq 退出即可，然后执行 source ~/.bash_profile 生效
+
+# go-proj 目录结构
 
     .
     ├── app                             应用目录
@@ -66,11 +127,11 @@
 
 # 关于web层
 
-    基于gin1.5.0+框架封装而成
+    基于gin1.8.2+框架封装而成
     
 # 关于gin validate参数校验
 
-    gin1.6.2+ 基于gopkg.in/go-playground/validator.v10封装之后
+    gin1.8.2+ 基于gopkg.in/go-playground/validator.v10封装之后
     将validator库的validate tag改成了binding方便gin使用
     
     参考手册：
@@ -89,62 +150,6 @@
         参考 https://github.com/daheige/hg-grpc
     centos系统
         参考 docs/centos7-protoc-install.md
-        
-# golang 环境安装
-
-    golang下载地址:
-       https://golang.google.cn/dl/
-
-    以go最新版本go1.14版本为例
-    https://dl.google.com/go/go1.14.1.linux-amd64.tar.gz
-    1、linux环境，下载
-        cd /usr/local/
-        sudo wget https://dl.google.com/go/go1.14.1.linux-amd64.tar.gz
-        sudo tar zxvf go1.14.1.linux-amd64.tar.gz
-        创建golang需要的目录
-        sudo mkdir /mygo
-        sudo mkdir /mygo/bin
-        sudo mkdir /mygo/src
-        sudo mkdir /mygo/pkg
-
-    2、设置环境变量vim ~/.bashrc 或者sudo vim /etc/profile
-        export GOROOT=/usr/local/go
-        export GOOS=linux
-        export GOPATH=/mygo
-        export GOSRC=$GOPATH/src
-        export GOBIN=$GOPATH/bin
-        export GOPKG=$GOPATH/pkg
-        #开启go mod机制
-        export GO111MODULE=on
-
-        #禁用cgo模块
-        export CGO_ENABLED=0
-
-        export PATH=$GOROOT/bin:$GOBIN:$PATH
-
-    3、source ~/.bashrc 生效配置
-
-# 设置 goproxy 代理
-
-    go version >= 1.13
-    设置goproxy代理
-    vim ~/.bashrc添加如下内容:
-    export GOPROXY=https://goproxy.io,direct
-    或者
-    export GOPROXY=https://goproxy.cn,direct
-    或者
-    export GOPROXY=https://goproxy.cn,https://mirrors.aliyun.com/goproxy/,direct
-
-    让bashrc生效
-    source ~/.bashrc
-
-    go version < 1.13
-    vim ~/.bashrc添加如下内容：
-    export GOPROXY=https://goproxy.io
-    或者使用 export GOPROXY=https://athens.azurefd.net
-    或者使用 export GOPROXY=https://mirrors.aliyun.com/goproxy/
-    让bashrc生效
-    source ~/.bashrc
 
 # php grpc工具和拓展安装
 

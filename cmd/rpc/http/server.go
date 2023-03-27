@@ -124,10 +124,10 @@ func main() {
 	httpServer := &http.Server{
 		Handler:           grpcHandlerFunc(server, mux), // 将grpc.Server服务转化为http.Handler
 		Addr:              address,
-		ReadHeaderTimeout: 5 * time.Second,  //read header timeout
-		ReadTimeout:       5 * time.Second,  //read request timeout
-		WriteTimeout:      10 * time.Second, //write timeout
-		IdleTimeout:       20 * time.Second, //tcp idle time
+		ReadHeaderTimeout: 5 * time.Second,  // read header timeout
+		ReadTimeout:       5 * time.Second,  // read request timeout
+		WriteTimeout:      10 * time.Second, // write timeout
+		IdleTimeout:       20 * time.Second, // tcp idle time
 	}
 
 	go func() {
@@ -147,7 +147,7 @@ func main() {
 	// We'll accept graceful shutdowns when quit via SIGINT (Ctrl+C)
 	// recivie signal to exit main goroutine
 	// window signal
-	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, syscall.SIGHUP)
+	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
 
 	// linux signal,please use this in production.
 	// signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM, syscall.SIGUSR2, os.Interrupt, syscall.SIGHUP)
@@ -169,7 +169,7 @@ func main() {
 	// Optionally, you could run srv.Shutdown in a goroutine and block on
 	// if your application should wait for other services
 	// to finalize based on context cancellation.
-	go httpServer.Shutdown(ctx) //在独立的携程中关闭服务器
+	go httpServer.Shutdown(ctx) // 在独立的携程中关闭服务器
 	<-ctx.Done()
 
 	log.Println("shutting down")
