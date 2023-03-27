@@ -18,16 +18,16 @@ cd /usr/local/
     sudo wget https://golang.google.cn/dl/go1.16.15.linux-amd64.tar.gz
     sudo tar zxvf go1.16.15.linux-amd64.tar.gz
     # 创建golang需要的目录
-    sudo mkdir /mygo
-    sudo mkdir /mygo/bin
-    sudo mkdir /mygo/src
-    sudo mkdir /mygo/pkg
+    sudo mkdir ~/go
+    sudo mkdir ~/go/bin
+    sudo mkdir ~/go/src
+    sudo mkdir ~/go/pkg
 ```
 2. 设置环境变量vim ~/.bashrc 或者sudo vim /etc/profile
 ```shell
     export GOROOT=/usr/local/go
     export GOOS=linux
-    export GOPATH=/mygo
+    export GOPATH=~/go
     export GOSRC=$GOPATH/src
     export GOBIN=$GOPATH/bin
     export GOPKG=$GOPATH/pkg
@@ -51,7 +51,7 @@ vim ~/.bash_profile
 ```shell
     export GOROOT=/usr/local/go
     export GOOS=linux
-    export GOPATH=/mygo
+    export GOPATH=~/go
     export GOSRC=$GOPATH/src
     export GOBIN=$GOPATH/bin
     export GOPKG=$GOPATH/pkg
