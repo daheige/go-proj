@@ -66,7 +66,7 @@
 
         cd /usr/local/grpc
 
-        git submodule update --init
+        git submodule update --init --recursive
 
         # sudo make && sudo make install
         
@@ -127,3 +127,4 @@
 
         $ php -m | grep grpc
         grpc
+
